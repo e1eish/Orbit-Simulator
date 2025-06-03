@@ -20,6 +20,9 @@
 using namespace std;
 
 #define STARCOUNT 250
+#define EARTH_RADIUS 6378000.0
+#define GRAVITY 9.80665
+#define FRAMERATE 30.0
 
 /*************************************************************************
  * Demo
@@ -55,6 +58,10 @@ public:
       angleShip = 0.0;
       angleEarth = 0.0;
       phaseStar = 0;
+      
+      ptGPS = Position(0.0,     42164000.0);
+      vGPS  = Position(-3100.0, 0.0);
+      aGPS  = Position(0.0,     0.0);
    }
 
    Position ptHubble;
@@ -65,6 +72,9 @@ public:
    Position ptGPS;
    Position ptStar;
    Position ptUpperRight;
+   
+   Position vGPS;
+   Position aGPS;
 
    unsigned char phaseStar;
    Star stars[STARCOUNT];
@@ -72,6 +82,44 @@ public:
    double angleShip;
    double angleEarth;
 };
+
+
+
+Position getGravity(Position & pos)
+{
+   double h;
+   double r  = 6378000;
+   h = sqrt((pos.getMetersX() * pos.getMetersX()) + (pos.getMetersY() * pos.getMetersY())) - r;
+   
+   double g;
+   double g1 = 9.80665;
+   g = g1 * pow((r / (r + h)), 2);
+   
+   double d;
+   d = atan2(-1.0 * pos.getMetersX(), -1.0 * pos.getMetersY());
+   
+   double ddx;
+   double ddy;
+   ddx = g * sin(d);
+   ddy = g * cos(d);
+   
+   return Position(ddx, ddy);
+}
+
+
+void updatePosition(Position & pos, Position & v, Position & a)
+{
+   double tpf = (24.0 * 60.0) / FRAMERATE;
+   a = getGravity(pos);
+   
+   v.setMetersX(v.getMetersX() + a.getMetersX() * tpf);
+   v.setMetersY(v.getMetersY() + a.getMetersY() * tpf);
+   
+   pos.setMetersX(pos.getMetersX() + v.getMetersX() * tpf + 0.5 * a.getMetersX() * tpf * tpf);
+   pos.setMetersY(pos.getMetersY() + v.getMetersY() * tpf + 0.5 * a.getMetersY() * tpf * tpf);
+}
+
+
 
 /*************************************
  * All the interesting work happens here, when
@@ -106,7 +154,9 @@ void callBack(const Interface* pUI, void* p)
    //
 
    // rotate the earth
-   pDemo->angleEarth += 0.01;
+   //pDemo->angleEarth += 0.01;
+   pDemo->angleEarth -= ((2.0 * M_PI) / FRAMERATE) * ((24.0 * 60.0) / 86400.0)/* * (180.0 / M_PI)*/;
+   
    pDemo->angleShip += 0.02;
    pDemo->phaseStar++;
 
@@ -116,6 +166,8 @@ void callBack(const Interface* pUI, void* p)
 
    Position pt;
    ogstream gout(pt);
+   
+   updatePosition(pDemo->ptGPS, pDemo->vGPS, pDemo->aGPS);
 
    // draw satellites
    //gout.drawCrewDragon(pDemo->ptCrewDragon, pDemo->angleShip);
@@ -187,6 +239,8 @@ int main(int argc, char** argv)
    Interface ui(0, NULL,
       "Demo",   /* name on the window */
       ptUpperRight);
+   
+   ui.setFramesPerSecond(FRAMERATE);
 
    // Initialize the demo
    Demo demo(ptUpperRight);
