@@ -27,6 +27,7 @@ class Velocity
    // for unit tests
    friend TestPosition;
    friend TestVelocity;
+   friend class TestSatellite;
 
    
 public:

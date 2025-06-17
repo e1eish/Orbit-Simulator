@@ -27,6 +27,8 @@ class Acceleration
 //   friend TestAcceleration;
 
 public:
+   friend class TestSatellite;
+   
    // constructors
    Acceleration()                         : ddx(0.0), ddy(0.0)         {}
    Acceleration(const Acceleration & rhs) : ddx(rhs.ddx), ddy(rhs.ddy) {}

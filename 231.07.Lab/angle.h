@@ -28,6 +28,7 @@ public:
    friend TestAcceleration;
    friend TestVelocity;
    friend TestAngle;
+   friend class TestSatellite;
 
    // Constructors
    Angle()                  : radians(0.0)         {}

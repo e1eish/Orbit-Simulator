@@ -26,6 +26,7 @@ class Position
 {
 public:
    friend TestPosition;
+   friend class TestSatellite;
    
    // constructors
    Position()            : x(0.0), y(0.0)  {}

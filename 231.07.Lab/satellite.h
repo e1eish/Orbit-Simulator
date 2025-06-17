@@ -12,8 +12,8 @@
 #include <iostream>
 #include <cmath>
 #include <list>
-#include "velocity.h"
 #include "position.h"
+#include "velocity.h"
 #include "angle.h"
 #include "uiDraw.h"
 #include "uiInteract.h"
@@ -24,8 +24,18 @@ using namespace std;
 class Satellite
 {
 public:
-   Satellite() {}
-   Satellite(const Position & pos, const Velocity & velocity, const Angle & angle) : velocity(velocity), pos(pos), direction(angle) {}
+   friend class TestSatellite;
+   friend class Position;
+   friend class Velocity;
+   friend class Angle;
+   
+   
+   Satellite() :  velocity(Velocity(0.0, 0.0)), pos(Position(0.0, 0.0)), direction(Angle(0.0)),
+                  angularVelocity(0.0), dead(false), radius(0.0) {}
+   Satellite(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel, double radius) :
+               velocity(velocity), pos(pos), direction(angle), angularVelocity(angularVel), dead(false), radius(radius) {}
+   Satellite(const Satellite & rhs) :  velocity(rhs.velocity), pos(rhs.pos), direction(rhs.direction),
+                                       angularVelocity(rhs.angularVelocity), dead(rhs.dead), radius(rhs.radius) {}
    ~Satellite() {}
    
    double getRadius() const { return radius; }
@@ -34,14 +44,14 @@ public:
    bool isDead() const { return dead; }
    void kill() { dead = true; }
    
-   virtual void draw(ogstream* pgout) const = 0;
-   virtual void destroy(list<Satellite> &satellites) {}
+   virtual void draw(ogstream* pgout) const {}
+   virtual void destroy(list<Satellite*> &satellites) {}
    virtual void input(Interface* pUI) {}
    virtual void move(double time);
    
 private:
-   Velocity velocity;
    Position pos;
+   Velocity velocity;
    Angle direction;
    double angularVelocity;
    bool dead;
