@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9499E6182E01E0C000434E03 /* acceleration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9499E6132E01E0C000434E03 /* acceleration.cpp */; };
+		9499E6192E01E0C000434E03 /* angle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9499E6152E01E0C000434E03 /* angle.cpp */; };
+		9499E61A2E01E0C000434E03 /* velocity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9499E6172E01E0C000434E03 /* velocity.cpp */; };
+		9499E61D2E01E8E300434E03 /* satellite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9499E61C2E01E8DA00434E03 /* satellite.cpp */; };
 		C11C7EA425780B2100EA4B2E /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C11C7EA225780B2100EA4B2E /* GLUT.framework */; };
 		C11C7EA525780B2100EA4B2E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C11C7EA325780B2100EA4B2E /* OpenGL.framework */; };
 		C11C7EB125780B6500EA4B2E /* Lab07.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C11C7EA625780B5C00EA4B2E /* Lab07.cpp */; };
@@ -29,6 +33,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		945EE8782DFB2A6C00A383ED /* pseudocode.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = pseudocode.txt; sourceTree = "<group>"; };
+		9499E6122E01E0C000434E03 /* acceleration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = acceleration.h; sourceTree = "<group>"; };
+		9499E6132E01E0C000434E03 /* acceleration.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = acceleration.cpp; sourceTree = "<group>"; };
+		9499E6142E01E0C000434E03 /* angle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = angle.h; sourceTree = "<group>"; };
+		9499E6152E01E0C000434E03 /* angle.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = angle.cpp; sourceTree = "<group>"; };
+		9499E6162E01E0C000434E03 /* velocity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = velocity.h; sourceTree = "<group>"; };
+		9499E6172E01E0C000434E03 /* velocity.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = velocity.cpp; sourceTree = "<group>"; };
+		9499E61B2E01E2AE00434E03 /* satellite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = satellite.h; sourceTree = "<group>"; };
+		9499E61C2E01E8DA00434E03 /* satellite.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = satellite.cpp; sourceTree = "<group>"; };
 		949CBEDA2DEF6C63008A1A1F /* star.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = star.h; sourceTree = "<group>"; };
 		C11C7E962578098A00EA4B2E /* Lab07 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Lab07; sourceTree = BUILT_PRODUCTS_DIR; };
 		C11C7EA225780B2100EA4B2E /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
@@ -64,12 +77,21 @@
 			children = (
 				C1FC37B62C221C36000A76B0 /* unitTest.h */,
 				C179C6C227E375D600E3E514 /* position.h */,
+				945EE8782DFB2A6C00A383ED /* pseudocode.txt */,
 				C179C6C027E375AF00E3E514 /* position.cpp */,
 				C11C7EA625780B5C00EA4B2E /* Lab07.cpp */,
+				9499E61B2E01E2AE00434E03 /* satellite.h */,
+				9499E61C2E01E8DA00434E03 /* satellite.cpp */,
 				949CBEDA2DEF6C63008A1A1F /* star.h */,
 				C11C7EA725780B5C00EA4B2E /* test.cpp */,
 				C11C7EAC25780B6000EA4B2E /* test.h */,
 				C11C7EAF25780B6500EA4B2E /* testPosition.h */,
+				9499E6122E01E0C000434E03 /* acceleration.h */,
+				9499E6132E01E0C000434E03 /* acceleration.cpp */,
+				9499E6142E01E0C000434E03 /* angle.h */,
+				9499E6152E01E0C000434E03 /* angle.cpp */,
+				9499E6162E01E0C000434E03 /* velocity.h */,
+				9499E6172E01E0C000434E03 /* velocity.cpp */,
 				C11C7EAD25780B6000EA4B2E /* uiDraw.cpp */,
 				C11C7EB025780B6500EA4B2E /* uiDraw.h */,
 				C11C7EA925780B5E00EA4B2E /* uiInteract.cpp */,
@@ -156,6 +178,10 @@
 				C11C7EB125780B6500EA4B2E /* Lab07.cpp in Sources */,
 				C11C7EB225780B6500EA4B2E /* test.cpp in Sources */,
 				C11C7EB325780B6500EA4B2E /* uiInteract.cpp in Sources */,
+				9499E61D2E01E8E300434E03 /* satellite.cpp in Sources */,
+				9499E6182E01E0C000434E03 /* acceleration.cpp in Sources */,
+				9499E6192E01E0C000434E03 /* angle.cpp in Sources */,
+				9499E61A2E01E0C000434E03 /* velocity.cpp in Sources */,
 				C179C6C127E375AF00E3E514 /* position.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -6,9 +6,9 @@
  * 3. Assignment Description:
  *      Simulate satellites orbiting the earth
  * 4. What was the hardest part? Be as specific as possible.
- *      ??
+ *      The hardest part was making sure that the formulas were input and used correctly.
  * 5. How long did it take for you to complete the assignment?
- *      ??
+ *      2 hours
  *****************************************************************/
 
 #include <cassert>      // for ASSERT
@@ -23,6 +23,63 @@ using namespace std;
 #define EARTH_RADIUS 6378000.0
 #define GRAVITY 9.80665
 #define FRAMERATE 30.0
+
+class GPS
+{
+public:
+   Position p;
+   Position v;
+   Position a;
+   Position prevPos;
+   double angle;
+   
+   GPS() {}
+   GPS(Position & p, Position & v, Position & a, double angle) : p(p), v(v), a(a), angle(angle) {}
+   
+   Position getGravity()
+   {
+      double h;
+      h = sqrt((p.getMetersX() * p.getMetersX()) + (p.getMetersY() * p.getMetersY())) - EARTH_RADIUS;
+      
+      double g;
+      double x = (EARTH_RADIUS / (EARTH_RADIUS + h));
+      g = GRAVITY * x * x;
+      
+      double d;
+      d = atan2(-1.0 * p.getMetersX(), -1.0 * p.getMetersY());
+      
+      double ddx;
+      double ddy;
+      ddx = g * sin(d);
+      ddy = g * cos(d);
+      
+      return Position(ddx, ddy);
+   }
+   
+   void updatePosition()
+   {
+      prevPos = p;
+      
+      double tpf = (24.0 * 60.0) / FRAMERATE;
+      a = getGravity();
+      
+      v.setMetersX(v.getMetersX() + a.getMetersX() * tpf);
+      v.setMetersY(v.getMetersY() + a.getMetersY() * tpf);
+      
+      p.setMetersX(p.getMetersX() + v.getMetersX() * tpf + 0.5 * a.getMetersX() * tpf * tpf);
+      p.setMetersY(p.getMetersY() + v.getMetersY() * tpf + 0.5 * a.getMetersY() * tpf * tpf);
+      
+      angle += getAngle(p) - getAngle(prevPos);
+   }
+
+   double getAngle(Position & pos)
+   {
+      double a = atan2(pos.getMetersX(), pos.getMetersY());
+      return a;
+   }
+};
+
+
 
 /*************************************************************************
  * Demo
@@ -55,13 +112,37 @@ public:
       ptStar.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
       ptStar.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
 
-      angleShip = 0.0;
+      angleShip = 0.5 * M_PI;
       angleEarth = 0.0;
       phaseStar = 0;
       
       ptGPS = Position(0.0,     42164000.0);
       vGPS  = Position(-3100.0, 0.0);
       aGPS  = Position(0.0,     0.0);
+      
+      gps[0].p = Position(    0.0, 26560000.0);
+      gps[0].v = Position(-3880.0,        0.0);
+      gps[0].angle = 0.5 * M_PI;
+      
+      gps[1].p = Position(23001634.72, 13280000.0);
+      gps[1].v = Position(   -1940.0,      3360.18);
+      gps[1].angle = 5.0 * M_PI / 6.0;
+      
+      gps[2].p = Position(23001634.72, -13280000.0);
+      gps[2].v = Position(    1940.0,       3360.18);
+      gps[2].angle = M_PI / 6.0;
+      
+      gps[3].p = Position(   0.0, -26560000.0);
+      gps[3].v = Position(3880.0,         0.0);
+      gps[3].angle = 1.5 * M_PI;
+      
+      gps[4].p = Position(-23001634.72, -13280000.0);
+      gps[4].v = Position(     1940.0,      -3360.18);
+      gps[4].angle = 11.0 * M_PI / 6.0;
+      
+      gps[5].p = Position(-23001634.72, 13280000.0);
+      gps[5].v = Position(    -1940.0,     -3360.18);
+      gps[5].angle = 7.0 * M_PI / 6.0;
    }
 
    Position ptHubble;
@@ -75,6 +156,9 @@ public:
    
    Position vGPS;
    Position aGPS;
+   Position prevPos;
+   
+   GPS gps[6];
 
    unsigned char phaseStar;
    Star stars[STARCOUNT];
@@ -84,16 +168,18 @@ public:
 };
 
 
-
+/*************************************************************************
+ * Get Gravity
+ * Compute the accelertion due to gravity from a given position.
+ *************************************************************************/
 Position getGravity(Position & pos)
 {
    double h;
-   double r  = 6378000;
-   h = sqrt((pos.getMetersX() * pos.getMetersX()) + (pos.getMetersY() * pos.getMetersY())) - r;
+   h = sqrt((pos.getMetersX() * pos.getMetersX()) + (pos.getMetersY() * pos.getMetersY())) - EARTH_RADIUS;
    
    double g;
-   double g1 = 9.80665;
-   g = g1 * pow((r / (r + h)), 2);
+   double x = (EARTH_RADIUS / (EARTH_RADIUS + h));
+   g = GRAVITY * x * x;
    
    double d;
    d = atan2(-1.0 * pos.getMetersX(), -1.0 * pos.getMetersY());
@@ -106,7 +192,10 @@ Position getGravity(Position & pos)
    return Position(ddx, ddy);
 }
 
-
+/*************************************************************************
+ * Update Position
+ * Update the position given a velocity and acceleration according to kinematics.
+ *************************************************************************/
 void updatePosition(Position & pos, Position & v, Position & a)
 {
    double tpf = (24.0 * 60.0) / FRAMERATE;
@@ -117,6 +206,12 @@ void updatePosition(Position & pos, Position & v, Position & a)
    
    pos.setMetersX(pos.getMetersX() + v.getMetersX() * tpf + 0.5 * a.getMetersX() * tpf * tpf);
    pos.setMetersY(pos.getMetersY() + v.getMetersY() * tpf + 0.5 * a.getMetersY() * tpf * tpf);
+}
+
+double getAngle(Position & pos)
+{
+   double a = atan2(pos.getMetersX(),pos.getMetersY());
+   return a;
 }
 
 
@@ -152,22 +247,34 @@ void callBack(const Interface* pUI, void* p)
    //
    // perform all the game logic
    //
+   
 
    // rotate the earth
    //pDemo->angleEarth += 0.01;
-   pDemo->angleEarth -= ((2.0 * M_PI) / FRAMERATE) * ((24.0 * 60.0) / 86400.0)/* * (180.0 / M_PI)*/;
+   pDemo->angleEarth -= ((2.0 * M_PI) / FRAMERATE) * ((24.0 * 60.0) / 86400.0);
    
-   pDemo->angleShip += 0.02;
+   
+   
+   
    pDemo->phaseStar++;
 
    //
    // draw everything
    //
+   
+   pDemo->prevPos = pDemo->ptGPS;
 
    Position pt;
    ogstream gout(pt);
    
    updatePosition(pDemo->ptGPS, pDemo->vGPS, pDemo->aGPS);
+   for (int i = 0; i < 6; i++)
+   {
+      pDemo->gps[i].updatePosition();
+      gout.drawGPS(pDemo->gps[i].p, pDemo->gps[i].angle);
+   }
+   
+   pDemo->angleShip += getAngle(pDemo->ptGPS) - getAngle(pDemo->prevPos);
 
    // draw satellites
    //gout.drawCrewDragon(pDemo->ptCrewDragon, pDemo->angleShip);

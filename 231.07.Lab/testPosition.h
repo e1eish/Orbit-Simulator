@@ -35,6 +35,26 @@ public:
       // Getters
       getMetersX();
       getMetersY();
+      
+      setZoom_member();
+      setZoom_anotherVariable();
+      getZoom_member();
+      getZoom_anotherVariable();
+      setPixelsX_noZoom();
+      setPixelsX_zoom();
+      setPixelsY_noZoom();
+      setPixelsY_zoom();
+      getPixelsX_noZoom();
+      getPixelsX_zoom();
+      getPixelsY_noZoom();
+      getPixelsY_zoom();
+      
+      addMetersX();
+      addMetersY();
+      addPixelsX_noZoom();
+      addPixelsX_zoom();
+      addPixelsY_noZoom();
+      addPixelsY_zoom();
 
       report("Position");
    }
@@ -228,6 +248,496 @@ private:
       assertEquals(pos.x, 999.9);
       assertEquals(pos.y, 123.4);
       assertEquals(pos.metersFromPixels, 99.9);
+      // teardown
+      Position::metersFromPixels = metersFromPixels;
+   }
+   
+   
+   /*********************************************
+    * name:    GET ZOOM : member variable
+    * input:   pos.metersFromPixels=123.4
+    * output:  zoom=123.4
+    *          Position::metersFromPixels=123.4
+    *********************************************/
+   void getZoom_member()
+   {  // setup
+      double metersFromPixels = Position::metersFromPixels;
+      Position pos;
+      pos.metersFromPixels = 123.4;
+      double zoom = 0.0;
+      
+      // exercise
+      zoom = pos.getZoom();
+      
+      // verify
+      assertEquals(pos.metersFromPixels, 123.4);
+      assertEquals(zoom, 123.4);
+      assertEquals(Position::metersFromPixels, 123.4);
+      
+      // teardown
+      Position::metersFromPixels = metersFromPixels;
+   }
+   
+   /*********************************************
+    * name:    GET ZOOM : another variable
+    * input:   pos1.metersFromPixels=99.9  (set this first)
+    *          pos2.metersFromPixels=123.4 (set this second)
+    * output:  zoom=123.4
+    *          pos1.metersFromPixels=123.4 (last assignment sticks)
+    *          pos2.metersFromPixels=123.4
+    *********************************************/
+   void getZoom_anotherVariable()
+   {  // setup
+      double metersFromPixels = Position::metersFromPixels;
+      Position pos1;
+      Position pos2;
+      pos1.metersFromPixels = 99.9;
+      pos2.metersFromPixels = 123.4;
+      double zoom = 0.0;
+      
+      // exercise
+      zoom = pos1.getZoom();
+      
+      // verify
+      assertEquals(pos1.metersFromPixels, 123.4);
+      assertEquals(pos2.metersFromPixels, 123.4);
+      assertEquals(zoom, 123.4);
+      assertEquals(Position::metersFromPixels, 123.4);
+      
+      // teardown
+      Position::metersFromPixels = metersFromPixels;
+   }
+
+   /*********************************************
+    * name:    GET METERS X NO ZOOM
+    * input:   pos=(123.4, 567.8) metersFromPixels=1
+    * output:  x=123.4
+    *********************************************/
+   void getPixelsX_noZoom()
+   {  // setup
+      double metersFromPixels = Position::metersFromPixels;
+      Position::metersFromPixels = 1.0;
+      Position pos;
+      pos.x = 123.4;
+      pos.y = 567.8;
+      double x = 0.0;
+      
+      // exercise
+      x = pos.getPixelsX();
+      
+      // verify
+      assertEquals(pos.x, 123.4);
+      assertEquals(pos.y, 567.8);
+      assertEquals(x, 123.4);
+      assertEquals(pos.metersFromPixels, 1.0);
+      
+      // teardown
+      Position::metersFromPixels = metersFromPixels;
+   }
+   
+   /*********************************************
+    * name:    GET PIXELS X ZOOM
+    *          pixels = meters / metersFromPixels
+    * input:   pos=(123.4, 567.8) metersFromPixels=100
+    * output:  x=1.234
+    *********************************************/
+   void getPixelsX_zoom()
+   {  // setup
+      double metersFromPixels = Position::metersFromPixels;
+      Position::metersFromPixels = 100.0;
+      Position pos;
+      pos.x = 123.4;
+      pos.y = 567.8;
+      double x = 0.0;
+      
+      // exercise
+      x = pos.getPixelsX();
+      
+      // verify
+      assertEquals(pos.x, 123.4);
+      assertEquals(pos.y, 567.8);
+      assertEquals(x, 1.234);
+      assertEquals(pos.metersFromPixels, 100.0);
+      
+      // teardown
+      Position::metersFromPixels = metersFromPixels;
+   }
+
+   /*********************************************
+    * name:    GET PIXELS Y NO ZOOM
+    * input:   pos=(123.4, 567.8) metersFromPixels=1
+    * output:  y=567.8
+    *********************************************/
+   void getPixelsY_noZoom()
+   {  // setup
+      double metersFromPixels = Position::metersFromPixels;
+      Position::metersFromPixels = 1.0;
+      Position pos;
+      pos.x = 123.4;
+      pos.y = 567.8;
+      double y = 0.0;
+      
+      // exercise
+      y = pos.getPixelsY();
+      
+      // verify
+      assertEquals(pos.x, 123.4);
+      assertEquals(pos.y, 567.8);
+      assertEquals(y, 567.8);
+      assertEquals(pos.metersFromPixels, 1.0);
+      
+      // teardown
+      Position::metersFromPixels = metersFromPixels;
+   }
+
+   /*********************************************
+    * name:    GET PIXELS Y ZOOM
+    * input:   pos=(123.4, 567.8) metersFromPixels=100
+    * output:  y=5.678
+    *********************************************/
+   void getPixelsY_zoom()
+   {  // setup
+      double metersFromPixels = Position::metersFromPixels;
+      Position::metersFromPixels = 100.0;
+      Position pos;
+      pos.x = 123.4;
+      pos.y = 567.8;
+      double y = 0.0;
+      
+      // exercise
+      y = pos.getPixelsY();
+      
+      // verify
+      assertEquals(pos.x, 123.4);
+      assertEquals(pos.y, 567.8);
+      assertEquals(y, 5.678);
+      assertEquals(pos.metersFromPixels, 100.0);
+      
+      // teardown
+      Position::metersFromPixels = metersFromPixels;
+   }
+   
+   /*********************************************
+    * name:    SET PIXELS X NO ZOOM
+    *          When meterFromPixels == 1, pixels and meters are the same
+    * input:   pos=(999.9, 888.8) x=123.4 meterFromPixels=1
+    * output:  pos=(123.4, 888.8)
+    *********************************************/
+   void setPixelsX_noZoom()
+   {  // setup
+      double metersFromPixels = Position::metersFromPixels;
+      Position::metersFromPixels = 1.0;
+      Position pos;
+      pos.x = 999.9;
+      pos.y = 888.8;
+      double x = 123.4;
+      
+      // exercise
+      pos.setPixelsX(x);
+      
+      // verify
+      assertEquals(pos.x, 123.4);
+      assertEquals(pos.y, 888.8);
+      assertEquals(x, 123.4);
+      assertEquals(pos.metersFromPixels, 1.0);
+      
+      // teardown
+      Position::metersFromPixels = metersFromPixels;
+   }
+
+   /*********************************************
+    * name:    SET PIXELS X ZOOM
+    *          meters = pixels * metersFromPixels
+    * input:   pos=(999.9, 888.8) x=123.4 meterFromPixels=100
+    * output:  pos=(12340.0, 888.8)
+    *********************************************/
+   void setPixelsX_zoom()
+   {  // setup
+      double metersFromPixels = Position::metersFromPixels;
+      Position::metersFromPixels = 100.0;
+      Position pos;
+      pos.x = 999.9;
+      pos.y = 888.8;
+      double x = 123.4;
+      
+      // exercise
+      pos.setPixelsX(x);
+      
+      // verify
+      assertEquals(pos.x, 12340.0);
+      assertEquals(pos.y, 888.8);
+      assertEquals(x, 123.4);
+      assertEquals(pos.metersFromPixels, 100.0);
+      
+      // teardown
+      Position::metersFromPixels = metersFromPixels;
+   }
+   
+   /*********************************************
+    * name:    SET PIXELS Y NO ZOOM
+    * input:   pos=(999.9, 888.8) y=123.4 meterFromPixels=1
+    * output:  pos=(999.9, 123.4)
+    *********************************************/
+   void setPixelsY_noZoom()
+   {  // setup
+      double metersFromPixels = Position::metersFromPixels;
+      Position::metersFromPixels = 1.0;
+      Position pos;
+      pos.x = 999.9;
+      pos.y = 888.8;
+      double y = 123.4;
+      
+      // exercise
+      pos.setPixelsY(y);
+      
+      // verify
+      assertEquals(pos.x, 999.9);
+      assertEquals(pos.y, 123.4);
+      assertEquals(y, 123.4);
+      assertEquals(pos.metersFromPixels, 1.0);
+      
+      // teardown
+      Position::metersFromPixels = metersFromPixels;
+   }
+
+   /*********************************************
+    * name:    SET PIXELS Y ZOOM
+    * input:   pos=(999.9, 888.8) y=123.4 meterFromPixels=100
+    * output:  pos=(999.9, 12340.0)
+    *********************************************/
+   void setPixelsY_zoom()
+   {  // setup
+      double metersFromPixels = Position::metersFromPixels;
+      Position::metersFromPixels = 100.0;
+      Position pos;
+      pos.x = 999.9;
+      pos.y = 888.8;
+      double y = 123.4;
+      
+      // exercise
+      pos.setPixelsY(y);
+      
+      // verify
+      assertEquals(pos.x, 999.9);
+      assertEquals(pos.y, 12340.0);
+      assertEquals(y, 123.4);
+      assertEquals(pos.metersFromPixels, 100.0);
+      
+      // teardown
+      Position::metersFromPixels = metersFromPixels;
+   }
+   
+   /*********************************************
+    * name:    ADD METERS X
+    * input:   pos=(4500,2500) x=123.4
+    * output:  pos=(4623.4,2500)
+    *********************************************/
+   void addMetersX()
+   {  // setup
+      double metersFromPixels = Position::metersFromPixels;
+      Position::metersFromPixels = 99.9;
+      Position pos;
+      pos.x = 4500.0;
+      pos.y = 2500.0;
+      double x = 123.4;
+      
+      // exercise
+      pos.addMetersX(x);
+      
+      // verify
+      assertEquals(pos.x, 4623.4);
+      assertEquals(pos.y, 2500.0);
+      assertEquals(x, 123.4);
+      assertEquals(pos.metersFromPixels, 99.9);
+      
+      // teardown
+      Position::metersFromPixels = metersFromPixels;
+   }
+
+   /*********************************************
+    * name:    ADD METERS Y
+    * input:   pos=(4500,2500) y=123.4
+    * output:  pos=(4500,2623.4)
+    *********************************************/
+   void addMetersY()
+   {  // setup
+      double metersFromPixels = Position::metersFromPixels;
+      Position::metersFromPixels = 99.9;
+      Position pos;
+      pos.x = 4500.0;
+      pos.y = 2500.0;
+      double y = 123.4;
+      
+      // exercise
+      pos.addMetersY(y);
+      
+      // verify
+      assertEquals(pos.x, 4500.0);
+      assertEquals(pos.y, 2623.4);
+      assertEquals(y, 123.4);
+      assertEquals(pos.metersFromPixels, 99.9);
+      
+      // teardown
+      Position::metersFromPixels = metersFromPixels;
+   }
+
+   /*********************************************
+    * name:    ADD PIXELS X ZERO ZOOM
+    * input:   pos=(4500,2500) x=3pixels meterFromPixels=1.0
+    * output:  pos=(4503,2500)
+    *********************************************/
+   void addPixelsX_noZoom()
+   {  // setup
+      double metersFromPixels = Position::metersFromPixels;
+      Position::metersFromPixels = 1.0;
+      Position pos;
+      pos.x = 4500.0;
+      pos.y = 2500.0;
+      double x = 3.0;
+      
+      // exercise
+      pos.addPixelsX(x);
+      
+      // verify
+      assertEquals(pos.x, 4503.0);
+      assertEquals(pos.y, 2500.0);
+      assertEquals(x, 3.0);
+      assertEquals(pos.metersFromPixels, 1.0);
+      
+      // teardown
+      Position::metersFromPixels = metersFromPixels;
+   }
+
+   /*********************************************
+    * name:    ADD PIXELS X ZOOM
+    * input:   pos=(4500,2500) x=3pixels meterFromPixels=50.0
+    * output:  pos=(4650,2500)
+    *********************************************/
+   void addPixelsX_zoom()
+   {  // setup
+      double metersFromPixels = Position::metersFromPixels;
+      Position::metersFromPixels = 50.0;
+      Position pos;
+      pos.x = 4500.0;
+      pos.y = 2500.0;
+      double x = 3.0;
+      
+      // exercise
+      pos.addPixelsX(x);
+      
+      // verify
+      assertEquals(pos.x, 4650.0);
+      assertEquals(pos.y, 2500.0);
+      assertEquals(x, 3.0);
+      assertEquals(pos.metersFromPixels, 50.0);
+      
+      // teardown
+      Position::metersFromPixels = metersFromPixels;
+   }
+
+   /*********************************************
+    * name:    ADD PIXELS Y ZERO ZOOM
+    * input:   pos=(4500,2500) y=3pixels meterFromPixels=1.0
+    * output:  pos=(4500,2503)
+    *********************************************/
+   void addPixelsY_noZoom()
+   {  // setup
+      double metersFromPixels = Position::metersFromPixels;
+      Position::metersFromPixels = 1.0;
+      Position pos;
+      pos.x = 4500.0;
+      pos.y = 2500.0;
+      double y = 3.0;
+      
+      // exercise
+      pos.addPixelsY(y);
+      
+      // verify
+      assertEquals(pos.x, 4500.0);
+      assertEquals(pos.y, 2503.0);
+      assertEquals(y, 3.0);
+      assertEquals(pos.metersFromPixels, 1.0);
+      
+      // teardown
+      Position::metersFromPixels = metersFromPixels;
+   }
+
+   /*********************************************
+    * name:    ADD PIXELS Y ZOOM
+    * input:   pos=(4500,2500) y=3pixels meterFromPixels=50.0
+    * output:  pos=(4500,2650)
+    *********************************************/
+   void addPixelsY_zoom()
+   {  // setup
+      double metersFromPixels = Position::metersFromPixels;
+      Position::metersFromPixels = 50.0;
+      Position pos;
+      pos.x = 4500.0;
+      pos.y = 2500.0;
+      double y = 3.0;
+      
+      // exercise
+      pos.addPixelsY(y);
+      
+      // verify
+      assertEquals(pos.x, 4500.0);
+      assertEquals(pos.y, 2650.0);
+      assertEquals(y, 3.0);
+      assertEquals(pos.metersFromPixels, 50.0);
+      
+      // teardown
+      Position::metersFromPixels = metersFromPixels;
+   }
+   
+   /*********************************************
+    * name:    SET ZOOM : member variable
+    * input:   pos.metersFromPixels = 99.9, setZoom(123.4)
+    * output:  pos.metersFromPixels=123.4
+    *          Position::metersFromPixels=123.4
+    *********************************************/
+   void setZoom_member()
+   {  // setup
+      double metersFromPixels = Position::metersFromPixels;
+      Position::metersFromPixels = 99.9;
+      Position pos;
+      pos.metersFromPixels = 99.9;
+      
+      // exercise
+      pos.setZoom(123.4);
+      
+      // verify
+      assertEquals(pos.metersFromPixels, 123.4);
+      assertEquals(Position::metersFromPixels, 123.4);
+      
+      // teardown
+      Position::metersFromPixels = metersFromPixels;
+   }
+
+   /*********************************************
+    * name:    SET ZOOM : another variable
+    * input:   pos1.metersFromPixels=99.9
+    *          pos2.metersFromPixels=88.9
+    *          pos2.setZoom(123.4)
+    * output:  pos1.metersFromPixels=123.4
+    *          pos2.metersFromPixels=123.4
+    *          Position::metersFromPixels=123.4
+    *********************************************/
+   void setZoom_anotherVariable()
+   {  // setup
+      double metersFromPixels = Position::metersFromPixels;
+      Position pos1;
+      Position pos2;
+      pos1.metersFromPixels = 99.9;
+      pos2.metersFromPixels = 88.9;
+      
+      // exercise
+      pos2.setZoom(123.4);
+      
+      // verify
+      assertEquals(pos1.metersFromPixels, 123.4);
+      assertEquals(pos2.metersFromPixels, 123.4);
+      assertEquals(Position::metersFromPixels, 123.4);
+      
       // teardown
       Position::metersFromPixels = metersFromPixels;
    }

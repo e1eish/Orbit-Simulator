@@ -1,0 +1,27 @@
+FRAMERATE    <- 30.0
+EARTH_RADIUS <- 6378000.0
+GRAVITY      <- 9.80665
+
+Satellite::update()
+   tpf <- (24 * 60) / FRAMERATE
+   
+   a <- getGravity()
+   
+   v.addDX(a.getDDX() * tpf)
+   v.addDY(a.getDDY() * tpf)
+   
+   pos.addX(v.getDX() * tpf + a.getDDX() * tpf * tpf)
+   pos.addY(v.getDY() * tpf + a.getDDY() * tpf * tpf)
+   
+Satellite::getGravity()
+   h <- sqrt((p.getMetersX() * p.getMetersX()) + (p.getMetersY() * p.getMetersY())) - EARTH_RADIUS
+   
+   x <- (EARTH_RADIUS / (EARTH_RADIUS + h))
+   g <- GRAVITY * x * x
+   
+   d <- atan((-1.0 * p.getMetersX()) / (-1.0 * p.getMetersY()))
+   
+   ddx <- g * sin(d);
+   ddy <- g * cos(d);
+   
+   return Acceleration(ddx, ddy);
