@@ -2,7 +2,7 @@
  * Header File:
  *    VELOCITY
  * Author:
- *    Br. Helfrich, Greg Elbl, Ethan Leishman
+ *    Br. Helfrich, Greg Elbl, Ethan Leishman, Noah McSheehy
  * Summary:
  *    Everything we need to know about speed
  ************************************************************************/

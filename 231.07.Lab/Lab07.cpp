@@ -27,63 +27,6 @@ using namespace std;
 #define FRAMERATE 30.0
 #define TIME (24.0 * 60.0) / FRAMERATE
 
-//class GPS
-//{
-//public:
-//   Position p;
-//   Position v;
-//   Position a;
-//   Position prevPos;
-//   double angle;
-//   
-//   GPS() {}
-//   GPS(Position & p, Position & v, Position & a, double angle) : p(p), v(v), a(a), angle(angle) {}
-//   
-//   Position getGravity()
-//   {
-//      double h;
-//      h = sqrt((p.getMetersX() * p.getMetersX()) + (p.getMetersY() * p.getMetersY())) - EARTH_RADIUS;
-//      
-//      double g;
-//      double x = (EARTH_RADIUS / (EARTH_RADIUS + h));
-//      g = GRAVITY * x * x;
-//      
-//      double d;
-//      d = atan2(-1.0 * p.getMetersX(), -1.0 * p.getMetersY());
-//      
-//      double ddx;
-//      double ddy;
-//      ddx = g * sin(d);
-//      ddy = g * cos(d);
-//      
-//      return Position(ddx, ddy);
-//   }
-//   
-//   void updatePosition()
-//   {
-//      prevPos = p;
-//      
-//      double tpf = (24.0 * 60.0) / FRAMERATE;
-//      a = getGravity();
-//      
-//      v.setMetersX(v.getMetersX() + a.getMetersX() * tpf);
-//      v.setMetersY(v.getMetersY() + a.getMetersY() * tpf);
-//      
-//      p.setMetersX(p.getMetersX() + v.getMetersX() * tpf + 0.5 * a.getMetersX() * tpf * tpf);
-//      p.setMetersY(p.getMetersY() + v.getMetersY() * tpf + 0.5 * a.getMetersY() * tpf * tpf);
-//      
-//      angle += getAngle(p) - getAngle(prevPos);
-//   }
-//
-//   double getAngle(Position & pos)
-//   {
-//      double a = atan2(pos.getMetersX(), pos.getMetersY());
-//      return a;
-//   }
-//};
-
-
-
 /*************************************************************************
  * Demo
  * Test structure to capture the LM that will move around the screen
@@ -94,135 +37,29 @@ public:
    Demo(Position ptUpperRight) :
       ptUpperRight(ptUpperRight)
    {
-      ptHubble.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
-      ptHubble.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
-
-      ptSputnik.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
-      ptSputnik.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
-
-      ptStarlink.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
-      ptStarlink.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
-
-      ptCrewDragon.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
-      ptCrewDragon.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
-
-      ptShip.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
-      ptShip.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
-
-      ptGPS.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
-      ptGPS.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
-
-      ptStar.setPixelsX(ptUpperRight.getPixelsX() * random(-0.5, 0.5));
-      ptStar.setPixelsY(ptUpperRight.getPixelsY() * random(-0.5, 0.5));
-
-      angleShip = 0.5 * M_PI;
       angleEarth = 0.0;
       phaseStar = 0;
       
-      ptGPS = Position(0.0,     42164000.0);
-      vGPS  = Position(-3100.0, 0.0);
-      aGPS  = Position(0.0,     0.0);
+      // gps 1: p.x=          0.0, p.y=  26560000.0, v.dx= -3880.0, v.dy=      0.0, angle= pi/2
+      // gps 2: p.x=  23001634.72, p.y=  13280000.0, v.dx= -1940.0, v.dy=  3360.18, angle= 5pi/6
+      // gps 3: p.x=  23001634.72, p.y= -13280000.0, v.dx=  1940.0, v.dy=  3360.18, angle= pi/6
+      // gps 4: p.x=          0.0, p.y= -26560000.0, v.dx=  3880.0, v.dy=      0.0, angle= 3pi/2
+      // gps 5: p.x= -23001634.72, p.y= -13280000.0, v.dx=  1940.0, v.dy= -3360.18, angle= 11pi/6
+      // gps 6: p.x= -23001634.72, p.y=  13280000.0, v.dx= -1940.0, v.dy= -3360.18, angle= 7pi/6
       
-//      gps[0].p = Position(    0.0, 26560000.0);
-//      gps[0].v = Position(-3880.0,        0.0);
-//      gps[0].angle = 0.5 * M_PI;
-//      
-//      gps[1].p = Position(23001634.72, 13280000.0);
-//      gps[1].v = Position(   -1940.0,      3360.18);
-//      gps[1].angle = 5.0 * M_PI / 6.0;
-//      
-//      gps[2].p = Position(23001634.72, -13280000.0);
-//      gps[2].v = Position(    1940.0,       3360.18);
-//      gps[2].angle = M_PI / 6.0;
-//      
-//      gps[3].p = Position(   0.0, -26560000.0);
-//      gps[3].v = Position(3880.0,         0.0);
-//      gps[3].angle = 1.5 * M_PI;
-//      
-//      gps[4].p = Position(-23001634.72, -13280000.0);
-//      gps[4].v = Position(     1940.0,      -3360.18);
-//      gps[4].angle = 11.0 * M_PI / 6.0;
-//      
-//      gps[5].p = Position(-23001634.72, 13280000.0);
-//      gps[5].v = Position(    -1940.0,     -3360.18);
-//      gps[5].angle = 7.0 * M_PI / 6.0;
-      
-      GPS * gps = new GPS(Position(0.0, 42164000.0), Velocity(-3100.0, 0.0), 0.5 * M_PI, -0.000073522436656, 1.0);
+      GPS * gps = new GPS(Position(0.0, 42164000.0), Velocity(-3100.0, 0.0), Angle(90.0), -0.00354751968747, 1.0);
       satellites.push_back(gps);
    }
 
-   Position ptHubble;
-   Position ptSputnik;
-   Position ptStarlink;
-   Position ptCrewDragon;
-   Position ptShip;
-   Position ptGPS;
-   Position ptStar;
    Position ptUpperRight;
-   
-   Position vGPS;
-   Position aGPS;
-   Position prevPos;
-   
-   //GPS gps[6];
    
    list<Satellite*> satellites;
 
    unsigned char phaseStar;
    Star stars[STARCOUNT];
 
-   double angleShip;
    double angleEarth;
 };
-
-
-/*************************************************************************
- * Get Gravity
- * Compute the accelertion due to gravity from a given position.
- *************************************************************************/
-Position getGravity(Position & pos)
-{
-   double h;
-   h = sqrt((pos.getMetersX() * pos.getMetersX()) + (pos.getMetersY() * pos.getMetersY())) - EARTH_RADIUS;
-   
-   double g;
-   double x = (EARTH_RADIUS / (EARTH_RADIUS + h));
-   g = GRAVITY * x * x;
-   
-   double d;
-   d = atan2(-1.0 * pos.getMetersX(), -1.0 * pos.getMetersY());
-   
-   double ddx;
-   double ddy;
-   ddx = g * sin(d);
-   ddy = g * cos(d);
-   
-   return Position(ddx, ddy);
-}
-
-/*************************************************************************
- * Update Position
- * Update the position given a velocity and acceleration according to kinematics.
- *************************************************************************/
-void updatePosition(Position & pos, Position & v, Position & a)
-{
-   double tpf = (24.0 * 60.0) / FRAMERATE;
-   a = getGravity(pos);
-   
-   v.setMetersX(v.getMetersX() + a.getMetersX() * tpf);
-   v.setMetersY(v.getMetersY() + a.getMetersY() * tpf);
-   
-   pos.setMetersX(pos.getMetersX() + v.getMetersX() * tpf + 0.5 * a.getMetersX() * tpf * tpf);
-   pos.setMetersY(pos.getMetersY() + v.getMetersY() * tpf + 0.5 * a.getMetersY() * tpf * tpf);
-}
-
-double getAngle(Position & pos)
-{
-   double a = atan2(pos.getMetersX(),pos.getMetersY());
-   return a;
-}
-
-
 
 /*************************************
  * All the interesting work happens here, when
@@ -242,14 +79,14 @@ void callBack(const Interface* pUI, void* p)
    //
 
    // move by a little
-   if (pUI->isUp())
-      pDemo->ptShip.addPixelsY(1.0);
-   if (pUI->isDown())
-      pDemo->ptShip.addPixelsY(-1.0);
-   if (pUI->isLeft())
-      pDemo->ptShip.addPixelsX(-1.0);
-   if (pUI->isRight())
-      pDemo->ptShip.addPixelsX(1.0);
+//   if (pUI->isUp())
+//      pDemo->ptShip.addPixelsY(1.0);
+//   if (pUI->isDown())
+//      pDemo->ptShip.addPixelsY(-1.0);
+//   if (pUI->isLeft())
+//      pDemo->ptShip.addPixelsX(-1.0);
+//   if (pUI->isRight())
+//      pDemo->ptShip.addPixelsX(1.0);
 
 
    //
@@ -258,19 +95,13 @@ void callBack(const Interface* pUI, void* p)
    
 
    // rotate the earth
-   //pDemo->angleEarth += 0.01;
    pDemo->angleEarth -= ((2.0 * M_PI) / FRAMERATE) * ((24.0 * 60.0) / 86400.0);
-   
-   
-   
    
    pDemo->phaseStar++;
 
    //
    // draw everything
    //
-   
-   //pDemo->prevPos = pDemo->ptGPS;
 
    Position pt;
    ogstream gout(pt);
@@ -280,48 +111,8 @@ void callBack(const Interface* pUI, void* p)
       (*it)->move(TIME);
       (*it)->draw(&gout);
    }
-   
-   //updatePosition(pDemo->ptGPS, pDemo->vGPS, pDemo->aGPS);
-//   for (int i = 0; i < 6; i++)
-//   {
-//      pDemo->gps[i].updatePosition();
-//      gout.drawGPS(pDemo->gps[i].p, pDemo->gps[i].angle);
-//   }
-   
-   //pDemo->angleShip += getAngle(pDemo->ptGPS) - getAngle(pDemo->prevPos);
 
-   // draw satellites
-   //gout.drawCrewDragon(pDemo->ptCrewDragon, pDemo->angleShip);
-   //gout.drawHubble    (pDemo->ptHubble,     pDemo->angleShip);
-   //gout.drawSputnik   (pDemo->ptSputnik,    pDemo->angleShip);
-   //gout.drawStarlink  (pDemo->ptStarlink,   pDemo->angleShip);
-   //gout.drawShip      (pDemo->ptShip,       pDemo->angleShip, pUI->isSpace());
-   //gout.drawGPS       (pDemo->ptGPS,        pDemo->angleShip);
-
-   // draw parts
-   /*pt.setPixelsX(pDemo->ptCrewDragon.getPixelsX() + 20);
-   pt.setPixelsY(pDemo->ptCrewDragon.getPixelsY() + 20);
-   gout.drawCrewDragonRight(pt, pDemo->angleShip); // notice only two parameters are set
-   pt.setPixelsX(pDemo->ptHubble.getPixelsX() + 20);
-   pt.setPixelsY(pDemo->ptHubble.getPixelsY() + 20);
-   gout.drawHubbleLeft(pt, pDemo->angleShip);      // notice only two parameters are set
-   pt.setPixelsX(pDemo->ptGPS.getPixelsX() + 20);
-   pt.setPixelsY(pDemo->ptGPS.getPixelsY() + 20);
-   gout.drawGPSCenter(pt, pDemo->angleShip);       // notice only two parameters are set
-   pt.setPixelsX(pDemo->ptStarlink.getPixelsX() + 20);
-   pt.setPixelsY(pDemo->ptStarlink.getPixelsY() + 20);
-   gout.drawStarlinkArray(pt, pDemo->angleShip);   // notice only two parameters are set*/
-
-   // draw fragments
-   /*pt.setPixelsX(pDemo->ptSputnik.getPixelsX() + 20);
-   pt.setPixelsY(pDemo->ptSputnik.getPixelsY() + 20);
-   gout.drawFragment(pt, pDemo->angleShip);
-   pt.setPixelsX(pDemo->ptShip.getPixelsX() + 20);
-   pt.setPixelsY(pDemo->ptShip.getPixelsY() + 20);
-   gout.drawFragment(pt, pDemo->angleShip);*/
-
-   // draw a single star
-   gout.drawStar(pDemo->ptStar, pDemo->phaseStar);
+   // draw stars
    for (int i = 0; i < STARCOUNT; i++)
    {
       pDemo->stars[i].phase++;

@@ -424,8 +424,8 @@ private:
    {
       // setup
       Satellite s;
-      s.pos.x = -29814450.3219;
-      s.pos.y = -29814450.3219;
+      s.pos.x = 29814450.3219;
+      s.pos.y = 29814450.3219;
       s.velocity.dx = 0.0;
       s.velocity.dy = 0.0;
       s.direction.radians = 0.0;
@@ -440,10 +440,10 @@ private:
       // exercise
       a = s.getGravity();
       // verify
-      assertEquals(a.ddx, 0.158668639621);
-      assertEquals(a.ddy, 0.158668639621);
-      assertEquals(s.pos.x, -29814450.3219);
-      assertEquals(s.pos.y, -29814450.3219);
+      assertEquals(a.ddx, -0.158668639621);
+      assertEquals(a.ddy, -0.158668639621);
+      assertEquals(s.pos.x, 29814450.3219);
+      assertEquals(s.pos.y, 29814450.3219);
       assertEquals(s.velocity.dx, 0.0);
       assertEquals(s.velocity.dy, 0.0);
       assertEquals(s.direction.radians, 0.0);
@@ -460,7 +460,7 @@ private:
     *
     *    x_t = x_0 + dx * t + 1/2 * ddx * t^2
     *    dx = dx_0 + ddx * t
-    * output:  a.ddx= -0.158668639621, a.ddy= -0.158668639621
+    * output:  pos.x=0.0, pos.y=42163999.6634, vel.dx=0.0, vel.dy= -0.224391342075
     *********************************************/
    void move_noVelocity()
    {
@@ -499,7 +499,7 @@ private:
     *
     *    x_t = x_0 + dx * t + 1/2 * ddx * t^2
     *    dx = dx_0 + ddx * t
-    * output:  a.ddx= -0.158668639621, a.ddy= -0.158668639621
+    * output:  pos.x= -3100.0, pos.y=42163999.6634, vel.dx= -3100.0, vel.dy= -0.224391342075
     *********************************************/
    void move_perpendicularVelocity()
    {
@@ -538,7 +538,7 @@ private:
     *
     *    x_t = x_0 + dx * t + 1/2 * ddx * t^2
     *    dx = dx_0 + ddx * t
-    * output:  pos.x= -3100.0, pos.y=
+    * output:  pos.x= -3100.0, pos.y=42160899.6634, vel.dx= -3100.0, vel.dy= -3100.22439134
     *********************************************/
    void move_diagonalVelocity()
    {

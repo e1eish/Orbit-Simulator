@@ -2,7 +2,7 @@
  * Header File:
  *    ACCELERATION 
  * Author:
- *    Br. Helfrich, Greg Elbl, Ethan Leishman
+ *    Br. Helfrich, Greg Elbl, Ethan Leishman, Noah McSheehy
  * Summary:
  *    Everything we need to know about acceleration
  ************************************************************************/
@@ -11,8 +11,8 @@
 #pragma once
 
 //class TestAcceleration;
-//class TestVelocity;
-//class TestPosition;
+class TestVelocity;
+class TestPosition;
 class Angle;
 
 
@@ -22,11 +22,11 @@ class Angle;
  *********************************************/
 class Acceleration
 {
-//   friend TestPosition;
-//   friend TestVelocity;
-//   friend TestAcceleration;
 
 public:
+   friend TestPosition;
+   friend TestVelocity;
+   friend class TestAcceleration;
    friend class TestSatellite;
    friend class TestGPS;
    
