@@ -28,6 +28,7 @@ class Acceleration
 
 public:
    friend class TestSatellite;
+   friend class TestGPS;
    
    // constructors
    Acceleration()                         : ddx(0.0), ddy(0.0)         {}

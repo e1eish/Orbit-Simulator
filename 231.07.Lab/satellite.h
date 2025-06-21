@@ -49,7 +49,7 @@ public:
    virtual void input(Interface* pUI) {}
    virtual void move(double time);
    
-private:
+protected:
    Position pos;
    Velocity velocity;
    Angle direction;

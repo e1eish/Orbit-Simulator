@@ -22,6 +22,8 @@ void Satellite::move(double time)
    
    pos.setMetersX(pos.getMetersX() + velocity.getDX() * time + 0.5 * a.getDDX() * time * time);
    pos.setMetersY(pos.getMetersY() + velocity.getDY() * time + 0.5 * a.getDDY() * time * time);
+   
+   direction.add(angularVelocity);
 }
 
 Acceleration Satellite::getGravity() const

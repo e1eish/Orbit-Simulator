@@ -17,67 +17,70 @@
 #include "position.h"      // for POINT
 #include "test.h"
 #include "star.h"
+#include "satellite.h"
+#include "GPS.h"
 using namespace std;
 
 #define STARCOUNT 250
 #define EARTH_RADIUS 6378000.0
 #define GRAVITY 9.80665
 #define FRAMERATE 30.0
+#define TIME (24.0 * 60.0) / FRAMERATE
 
-class GPS
-{
-public:
-   Position p;
-   Position v;
-   Position a;
-   Position prevPos;
-   double angle;
-   
-   GPS() {}
-   GPS(Position & p, Position & v, Position & a, double angle) : p(p), v(v), a(a), angle(angle) {}
-   
-   Position getGravity()
-   {
-      double h;
-      h = sqrt((p.getMetersX() * p.getMetersX()) + (p.getMetersY() * p.getMetersY())) - EARTH_RADIUS;
-      
-      double g;
-      double x = (EARTH_RADIUS / (EARTH_RADIUS + h));
-      g = GRAVITY * x * x;
-      
-      double d;
-      d = atan2(-1.0 * p.getMetersX(), -1.0 * p.getMetersY());
-      
-      double ddx;
-      double ddy;
-      ddx = g * sin(d);
-      ddy = g * cos(d);
-      
-      return Position(ddx, ddy);
-   }
-   
-   void updatePosition()
-   {
-      prevPos = p;
-      
-      double tpf = (24.0 * 60.0) / FRAMERATE;
-      a = getGravity();
-      
-      v.setMetersX(v.getMetersX() + a.getMetersX() * tpf);
-      v.setMetersY(v.getMetersY() + a.getMetersY() * tpf);
-      
-      p.setMetersX(p.getMetersX() + v.getMetersX() * tpf + 0.5 * a.getMetersX() * tpf * tpf);
-      p.setMetersY(p.getMetersY() + v.getMetersY() * tpf + 0.5 * a.getMetersY() * tpf * tpf);
-      
-      angle += getAngle(p) - getAngle(prevPos);
-   }
-
-   double getAngle(Position & pos)
-   {
-      double a = atan2(pos.getMetersX(), pos.getMetersY());
-      return a;
-   }
-};
+//class GPS
+//{
+//public:
+//   Position p;
+//   Position v;
+//   Position a;
+//   Position prevPos;
+//   double angle;
+//   
+//   GPS() {}
+//   GPS(Position & p, Position & v, Position & a, double angle) : p(p), v(v), a(a), angle(angle) {}
+//   
+//   Position getGravity()
+//   {
+//      double h;
+//      h = sqrt((p.getMetersX() * p.getMetersX()) + (p.getMetersY() * p.getMetersY())) - EARTH_RADIUS;
+//      
+//      double g;
+//      double x = (EARTH_RADIUS / (EARTH_RADIUS + h));
+//      g = GRAVITY * x * x;
+//      
+//      double d;
+//      d = atan2(-1.0 * p.getMetersX(), -1.0 * p.getMetersY());
+//      
+//      double ddx;
+//      double ddy;
+//      ddx = g * sin(d);
+//      ddy = g * cos(d);
+//      
+//      return Position(ddx, ddy);
+//   }
+//   
+//   void updatePosition()
+//   {
+//      prevPos = p;
+//      
+//      double tpf = (24.0 * 60.0) / FRAMERATE;
+//      a = getGravity();
+//      
+//      v.setMetersX(v.getMetersX() + a.getMetersX() * tpf);
+//      v.setMetersY(v.getMetersY() + a.getMetersY() * tpf);
+//      
+//      p.setMetersX(p.getMetersX() + v.getMetersX() * tpf + 0.5 * a.getMetersX() * tpf * tpf);
+//      p.setMetersY(p.getMetersY() + v.getMetersY() * tpf + 0.5 * a.getMetersY() * tpf * tpf);
+//      
+//      angle += getAngle(p) - getAngle(prevPos);
+//   }
+//
+//   double getAngle(Position & pos)
+//   {
+//      double a = atan2(pos.getMetersX(), pos.getMetersY());
+//      return a;
+//   }
+//};
 
 
 
@@ -120,29 +123,32 @@ public:
       vGPS  = Position(-3100.0, 0.0);
       aGPS  = Position(0.0,     0.0);
       
-      gps[0].p = Position(    0.0, 26560000.0);
-      gps[0].v = Position(-3880.0,        0.0);
-      gps[0].angle = 0.5 * M_PI;
+//      gps[0].p = Position(    0.0, 26560000.0);
+//      gps[0].v = Position(-3880.0,        0.0);
+//      gps[0].angle = 0.5 * M_PI;
+//      
+//      gps[1].p = Position(23001634.72, 13280000.0);
+//      gps[1].v = Position(   -1940.0,      3360.18);
+//      gps[1].angle = 5.0 * M_PI / 6.0;
+//      
+//      gps[2].p = Position(23001634.72, -13280000.0);
+//      gps[2].v = Position(    1940.0,       3360.18);
+//      gps[2].angle = M_PI / 6.0;
+//      
+//      gps[3].p = Position(   0.0, -26560000.0);
+//      gps[3].v = Position(3880.0,         0.0);
+//      gps[3].angle = 1.5 * M_PI;
+//      
+//      gps[4].p = Position(-23001634.72, -13280000.0);
+//      gps[4].v = Position(     1940.0,      -3360.18);
+//      gps[4].angle = 11.0 * M_PI / 6.0;
+//      
+//      gps[5].p = Position(-23001634.72, 13280000.0);
+//      gps[5].v = Position(    -1940.0,     -3360.18);
+//      gps[5].angle = 7.0 * M_PI / 6.0;
       
-      gps[1].p = Position(23001634.72, 13280000.0);
-      gps[1].v = Position(   -1940.0,      3360.18);
-      gps[1].angle = 5.0 * M_PI / 6.0;
-      
-      gps[2].p = Position(23001634.72, -13280000.0);
-      gps[2].v = Position(    1940.0,       3360.18);
-      gps[2].angle = M_PI / 6.0;
-      
-      gps[3].p = Position(   0.0, -26560000.0);
-      gps[3].v = Position(3880.0,         0.0);
-      gps[3].angle = 1.5 * M_PI;
-      
-      gps[4].p = Position(-23001634.72, -13280000.0);
-      gps[4].v = Position(     1940.0,      -3360.18);
-      gps[4].angle = 11.0 * M_PI / 6.0;
-      
-      gps[5].p = Position(-23001634.72, 13280000.0);
-      gps[5].v = Position(    -1940.0,     -3360.18);
-      gps[5].angle = 7.0 * M_PI / 6.0;
+      GPS * gps = new GPS(Position(0.0, 42164000.0), Velocity(-3100.0, 0.0), 0.5 * M_PI, -0.000073522436656, 1.0);
+      satellites.push_back(gps);
    }
 
    Position ptHubble;
@@ -158,7 +164,9 @@ public:
    Position aGPS;
    Position prevPos;
    
-   GPS gps[6];
+   //GPS gps[6];
+   
+   list<Satellite*> satellites;
 
    unsigned char phaseStar;
    Star stars[STARCOUNT];
@@ -262,19 +270,25 @@ void callBack(const Interface* pUI, void* p)
    // draw everything
    //
    
-   pDemo->prevPos = pDemo->ptGPS;
+   //pDemo->prevPos = pDemo->ptGPS;
 
    Position pt;
    ogstream gout(pt);
    
-   updatePosition(pDemo->ptGPS, pDemo->vGPS, pDemo->aGPS);
-   for (int i = 0; i < 6; i++)
+   for (auto it = pDemo->satellites.begin(); it != pDemo->satellites.end(); ++it)
    {
-      pDemo->gps[i].updatePosition();
-      gout.drawGPS(pDemo->gps[i].p, pDemo->gps[i].angle);
+      (*it)->move(TIME);
+      (*it)->draw(&gout);
    }
    
-   pDemo->angleShip += getAngle(pDemo->ptGPS) - getAngle(pDemo->prevPos);
+   //updatePosition(pDemo->ptGPS, pDemo->vGPS, pDemo->aGPS);
+//   for (int i = 0; i < 6; i++)
+//   {
+//      pDemo->gps[i].updatePosition();
+//      gout.drawGPS(pDemo->gps[i].p, pDemo->gps[i].angle);
+//   }
+   
+   //pDemo->angleShip += getAngle(pDemo->ptGPS) - getAngle(pDemo->prevPos);
 
    // draw satellites
    //gout.drawCrewDragon(pDemo->ptCrewDragon, pDemo->angleShip);
@@ -282,7 +296,7 @@ void callBack(const Interface* pUI, void* p)
    //gout.drawSputnik   (pDemo->ptSputnik,    pDemo->angleShip);
    //gout.drawStarlink  (pDemo->ptStarlink,   pDemo->angleShip);
    //gout.drawShip      (pDemo->ptShip,       pDemo->angleShip, pUI->isSpace());
-   gout.drawGPS       (pDemo->ptGPS,        pDemo->angleShip);
+   //gout.drawGPS       (pDemo->ptGPS,        pDemo->angleShip);
 
    // draw parts
    /*pt.setPixelsX(pDemo->ptCrewDragon.getPixelsX() + 20);

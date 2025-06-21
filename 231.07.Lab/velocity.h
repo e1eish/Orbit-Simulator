@@ -28,6 +28,7 @@ class Velocity
    friend TestPosition;
    friend TestVelocity;
    friend class TestSatellite;
+   friend class TestGPS;
 
    
 public:

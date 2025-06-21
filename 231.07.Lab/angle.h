@@ -29,6 +29,7 @@ public:
    friend TestVelocity;
    friend TestAngle;
    friend class TestSatellite;
+   friend class TestGPS;
 
    // Constructors
    Angle()                  : radians(0.0)         {}

@@ -1,16 +1,16 @@
 /***********************************************************************
  * Header File:
- *    Test Satellite : Test the Satellite class
+ *    Test GPS : Test the GPS class
  * Author:
  *    Ethan Leishman, Noah McSheehy
  * Summary:
- *    All the unit tests for Satellite
+ *    All the unit tests for GPS
  ************************************************************************/
 
 
 #pragma once
 
-#include "satellite.h"
+#include "GPS.h"
 #include "acceleration.h"
 #include "unitTest.h"
 #include <cmath>
@@ -22,7 +22,7 @@
  * TEST Position
  * A friend class for Position which contains the Position unit tests
  ********************************/
-class TestSatellite : public UnitTest
+class TestGPS : public UnitTest
 {
 public:
    void run()
@@ -52,7 +52,7 @@ public:
       move_diagonalVelocity();
       
       
-      report("Satellite");
+      report("GPS");
    }
    
 private:
@@ -67,7 +67,7 @@ private:
    {
       // setup
       // exercise
-      Satellite s;
+      GPS s;
       // verify
       assertEquals(s.pos.x, 0.0);
       assertEquals(s.pos.y, 0.0);
@@ -99,7 +99,7 @@ private:
       double angV = 5.5;
       double r = 6.6;
       // exercise
-      Satellite s(p, v, a, angV, r);
+      GPS s(p, v, a, angV, r);
       // verify
       assertEquals(s.pos.x, 1.1);
       assertEquals(s.pos.y, 2.2);
@@ -128,7 +128,7 @@ private:
    void construct_copy()
    {
       // setup
-      Satellite rhs;
+      GPS rhs;
       rhs.pos.x = 1.1;
       rhs.pos.y = 2.2;
       rhs.velocity.dx = 3.3;
@@ -138,7 +138,7 @@ private:
       rhs.radius = 6.6;
       
       // exercise
-      Satellite s(rhs);
+      GPS s(rhs);
       // verify
       assertEquals(s.pos.x, 1.1);
       assertEquals(s.pos.y, 2.2);
@@ -166,7 +166,7 @@ private:
    void getRadius()
    {
       // setup
-      Satellite s;
+      GPS s;
       s.pos.x = 1.1;
       s.pos.y = 2.2;
       s.velocity.dx = 3.3;
@@ -201,7 +201,7 @@ private:
    void getPosition()
    {
       // setup
-      Satellite s;
+      GPS s;
       s.pos.x = 1.1;
       s.pos.y = 2.2;
       s.velocity.dx = 3.3;
@@ -238,7 +238,7 @@ private:
    void isDead()
    {
       // setup
-      Satellite s;
+      GPS s;
       s.pos.x = 1.1;
       s.pos.y = 2.2;
       s.velocity.dx = 3.3;
@@ -272,7 +272,7 @@ private:
    void kill()
    {
       // setup
-      Satellite s;
+      GPS s;
       s.pos.x = 1.1;
       s.pos.y = 2.2;
       s.velocity.dx = 3.3;
@@ -306,7 +306,7 @@ private:
    void getGravity_onSurface()
    {
       // setup
-      Satellite s;
+      GPS s;
       s.pos.x = 0.0;
       s.pos.y = EARTH_RADIUS;
       s.velocity.dx = 0.0;
@@ -345,7 +345,7 @@ private:
    void getGravity_above()
    {
       // setup
-      Satellite s;
+      GPS s;
       s.pos.x = 0.0;
       s.pos.y = 42164000.0;
       s.velocity.dx = 0.0;
@@ -384,7 +384,7 @@ private:
    void getGravity_below()
    {
       // setup
-      Satellite s;
+      GPS s;
       s.pos.x = 0.0;
       s.pos.y = -42164000.0;
       s.velocity.dx = 0.0;
@@ -423,7 +423,7 @@ private:
    void getGravity_diagonal()
    {
       // setup
-      Satellite s;
+      GPS s;
       s.pos.x = -29814450.3219;
       s.pos.y = -29814450.3219;
       s.velocity.dx = 0.0;
@@ -465,7 +465,7 @@ private:
    void move_noVelocity()
    {
       // setup
-      Satellite s;
+      GPS s;
       s.pos.x = 0.0;
       s.pos.y = 42164000.0;
       s.velocity.dx = 0.0;
@@ -504,7 +504,7 @@ private:
    void move_perpendicularVelocity()
    {
       // setup
-      Satellite s;
+      GPS s;
       s.pos.x = 0.0;
       s.pos.y = 42164000.0;
       s.velocity.dx = -3100.0;
@@ -543,7 +543,7 @@ private:
    void move_diagonalVelocity()
    {
       // setup
-      Satellite s;
+      GPS s;
       s.pos.x = 0.0;
       s.pos.y = 42164000.0;
       s.velocity.dx = -3100.0;
