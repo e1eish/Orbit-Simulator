@@ -1,14 +1,10 @@
 /*************************************************************
- * 1. Name:
+ * Header File:
  *      Demo
- * 2. Assignment Name:
- *      Lab 07: Orbit Simulator
- * 3. Assignment Description:
- *      Simulate satellites orbiting the earth
- * 4. What was the hardest part? Be as specific as possible.
- *      The hardest part was making sure that the formulas were input and used correctly.
- * 5. How long did it take for you to complete the assignment?
- *      2 hours
+ * Author:
+ *      Br. Helfrich, Ethan Leishman, Noah McSheehy
+ * Summary:
+ *      Where main is and what connects everything to run the simulation.
  *****************************************************************/
 
 #include <cassert>      // for ASSERT
@@ -92,7 +88,6 @@ void callBack(const Interface* pUI, void* p)
    //
    // perform all the game logic
    //
-   
 
    // rotate the earth
    pDemo->angleEarth -= ((2.0 * M_PI) / FRAMERATE) * ((24.0 * 60.0) / 86400.0);

@@ -2,7 +2,7 @@
  * Header File:
  *    TEST ACCELERATION
  * Author:
- *    Bro. Helfrich, Ethan Leishman, Noah McSheehy
+ *    Br. Helfrich, Ethan Leishman, Noah McSheehy
  * Summary:
  *    Unit tests for the Acceleration class.
  ************************************************************************/

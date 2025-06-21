@@ -2,7 +2,7 @@
  * Header File:
  *    TEST ANGLE
  * Author:
- *    Bro. Helfrich, Ethan Leishman, Noah McSheehy
+ *    Br. Helfrich, Ethan Leishman, Noah McSheehy
  * Summary:
  *    All the unit tests for ANGLE
  ************************************************************************/
