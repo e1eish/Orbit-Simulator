@@ -21,7 +21,11 @@ void Ship::input(const Interface* pUI, double time)
       Acceleration a;
       a.set(direction, THRUST);
       velocity.add(a, time);
+      isThrusting = true;
    }
+   else
+      isThrusting = false;
+   
    if (pUI->isLeft())
       direction.add(-ROTATION_SPEED);
    if (pUI->isRight())

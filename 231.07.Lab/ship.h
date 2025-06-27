@@ -24,13 +24,16 @@ public:
    friend class Angle;
    
    
-   Ship() : Satellite() {}
+   Ship() : Satellite(), isThrusting(false) {}
    Ship(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel, double radius) :
-               Satellite(pos, velocity, angle, angularVel, radius) {}
-   Ship(const Ship & rhs) :  Satellite(rhs) {}
+               Satellite(pos, velocity, angle, angularVel, radius), isThrusting((false)) {}
+   Ship(const Ship & rhs) :  Satellite(rhs), isThrusting(rhs.isThrusting) {}
    ~Ship() {}
    
    virtual void input(const Interface* pUI, double time);
-   virtual void draw(ogstream* pgout) const { pgout->drawShip(pos, direction.getRadians(), false); }
+   virtual void draw(ogstream* pgout) const { pgout->drawShip(pos, direction.getRadians(), isThrusting); }
+   
+private:
+   bool isThrusting;
 };
 
