@@ -41,6 +41,11 @@ public:
    Velocity()                     : dx(0.0), dy(0.0)       { }
    Velocity(double dx, double dy) : dx(dx), dy(dy)         { }
    Velocity(const Velocity & rhs) : dx(rhs.dx), dy(rhs.dy) { }
+   
+   Velocity operator+(const Velocity & rhs)
+   {
+      return Velocity(dx + rhs.dx, dy + rhs.dy);
+   }
 
    // getters
    double getDX()       const { return dx; }

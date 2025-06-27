@@ -123,7 +123,7 @@ void callBack(const Interface* pUI, void* p)
    
    for (auto it = pDemo->satellites.begin(); it != pDemo->satellites.end(); ++it)
    {
-      (*it)->input(pUI);
+      (*it)->input(pUI, TIME);
       (*it)->move(TIME);
       (*it)->draw(&gout);
    }

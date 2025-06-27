@@ -9,15 +9,19 @@
 
 #include "ship.h"
 #include "uiInteract.h"
+#include "acceleration.h"
 
 #define ROTATION_SPEED 0.05
+#define THRUST 5.0
 
-void Ship::input(const Interface* pUI)
+void Ship::input(const Interface* pUI, double time)
 {
    if (pUI->isUp())
-      ;
-   if (pUI->isDown())
-      ;
+   {
+      Acceleration a;
+      a.set(direction, THRUST);
+      velocity.add(a, time);
+   }
    if (pUI->isLeft())
       direction.add(-ROTATION_SPEED);
    if (pUI->isRight())

@@ -30,7 +30,7 @@ public:
    Ship(const Ship & rhs) :  Satellite(rhs) {}
    ~Ship() {}
    
-   virtual void input(const Interface* pUI);
+   virtual void input(const Interface* pUI, double time);
    virtual void draw(ogstream* pgout) const { pgout->drawShip(pos, direction.getRadians(), false); }
 };
 

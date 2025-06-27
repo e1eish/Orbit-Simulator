@@ -12,12 +12,14 @@
 
 #include "ship.h"
 #include "acceleration.h"
+#include "uiInteract.h"
 #include "unitTest.h"
 #include <cmath>
 
 #define EARTH_RADIUS 6378000.0
 #define GRAVITY 9.80665
 #define ROTATION_SPEED 0.05
+#define THRUST 5.0
 
 /*******************************
  * TEST Ship
@@ -53,8 +55,13 @@ public:
       move_diagonalVelocity();
       
       // rotate
-      //input_rotateLeft();
-      //input_rotateRight();
+      input_rotateLeft();
+      input_rotateRight();
+      
+      // trust
+      input_thrustUp();
+      input_thrustRight();
+      input_thrustDiagonal();
       
       
       report("Ship");
@@ -576,12 +583,103 @@ private:
    
    /*********************************************
     * name:    INPUT ROTATE LEFT
-    * input:
-    * output:
+    * input: radians=1.0
+    * output: radians=0.95
     *********************************************/
    void input_rotateLeft()
    {
       // setup
+      bool isLeft = Interface::isLeftPress;
+      
+      Ship s;
+      s.pos.x = 1.1;
+      s.pos.y = 2.2;
+      s.velocity.dx = 3.3;
+      s.velocity.dy = 4.4;
+      s.direction.radians = 1.0;
+      s.dead = false;
+      s.angularVelocity = 0.0;
+      s.radius = 0.0;
+      
+      double time = 1.0;
+      
+      
+      Interface ui;
+      ui.isLeftPress = true;
+      
+      // exercise
+      s.input(&ui, time);
+      
+      // verify
+      assertEquals(s.pos.x, 1.1);
+      assertEquals(s.pos.y, 2.2);
+      assertEquals(s.velocity.dx, 3.3);
+      assertEquals(s.velocity.dy, 4.4);
+      assertEquals(s.direction.radians, 0.95);
+      assertEquals(s.angularVelocity, 0.0);
+      assertEquals(s.dead, false);
+      assertEquals(s.radius, 0.0);
+      assertEquals(time, 1.0);
+      
+      // teardown
+      Interface::isLeftPress = isLeft;
+   }
+   
+   /*********************************************
+    * name:    INPUT ROTATE LEFT
+    * input: radians=1.0
+    * output: radians=1.05
+    *********************************************/
+   void input_rotateRight()
+   {
+      // setup
+      bool isRight = Interface::isRightPress;
+      
+      Ship s;
+      s.pos.x = 1.1;
+      s.pos.y = 2.2;
+      s.velocity.dx = 3.3;
+      s.velocity.dy = 4.4;
+      s.direction.radians = 1.0;
+      s.dead = false;
+      s.angularVelocity = 0.0;
+      s.radius = 0.0;
+      
+      double time = 1.0;
+      
+      
+      Interface ui;
+      ui.isRightPress = true;
+      
+      // exercise
+      s.input(&ui, time);
+      
+      // verify
+      assertEquals(s.pos.x, 1.1);
+      assertEquals(s.pos.y, 2.2);
+      assertEquals(s.velocity.dx, 3.3);
+      assertEquals(s.velocity.dy, 4.4);
+      assertEquals(s.direction.radians, 1.05);
+      assertEquals(s.angularVelocity, 0.0);
+      assertEquals(s.dead, false);
+      assertEquals(s.radius, 0.0);
+      assertEquals(time, 1.0);
+      
+      // teardown
+      Interface::isRightPress = isRight;
+   }
+   
+   /*********************************************
+    * name:    INPUT THRUST UP
+    * input: dx=3.3, dy=4.4, radians=0.0
+    *    v_1 = v_0 + a * t
+    * output: dx=3.3, dy=104.4, radians=0.0
+    *********************************************/
+   void input_thrustUp()
+   {
+      // setup
+      bool isUp = Interface::isUpPress;
+      
       Ship s;
       s.pos.x = 1.1;
       s.pos.y = 2.2;
@@ -592,17 +690,119 @@ private:
       s.angularVelocity = 0.0;
       s.radius = 0.0;
       
+      double time = 1.0;
+      
+      
+      Interface ui;
+      ui.isUpPress = true;
       
       // exercise
-      //s.input();
+      s.input(&ui, time);
+      
       // verify
       assertEquals(s.pos.x, 1.1);
       assertEquals(s.pos.y, 2.2);
       assertEquals(s.velocity.dx, 3.3);
-      assertEquals(s.velocity.dy, 4.4);
-      assertEquals(s.direction.radians, -0.05);
+      assertEquals(s.velocity.dy, 9.4);
+      assertEquals(s.direction.radians, 0.0);
       assertEquals(s.angularVelocity, 0.0);
       assertEquals(s.dead, false);
       assertEquals(s.radius, 0.0);
-   }  // teardown
+      assertEquals(time, 1.0);
+      
+      // teardown
+      Interface::isUpPress = isUp;
+   }
+   
+   /*********************************************
+    * name:    INPUT THRUST RIGHT
+    * input: dx=3.3, dy=4.4, radians=pi/2
+    *    v_1 = v_0 + a * t
+    * output: dx=3.3, dy=104.4, radians=pi/2
+    *********************************************/
+   void input_thrustRight()
+   {
+      // setup
+      bool isUp = Interface::isUpPress;
+      
+      Ship s;
+      s.pos.x = 1.1;
+      s.pos.y = 2.2;
+      s.velocity.dx = 3.3;
+      s.velocity.dy = 4.4;
+      s.direction.radians = M_PI / 2.0;
+      s.dead = false;
+      s.angularVelocity = 0.0;
+      s.radius = 0.0;
+      
+      double time = 1.0;
+      
+      
+      Interface ui;
+      ui.isUpPress = true;
+      
+      // exercise
+      s.input(&ui, time);
+      
+      // verify
+      assertEquals(s.pos.x, 1.1);
+      assertEquals(s.pos.y, 2.2);
+      assertEquals(s.velocity.dx, 8.3);
+      assertEquals(s.velocity.dy, 4.4);
+      assertEquals(s.direction.radians, M_PI / 2.0);
+      assertEquals(s.angularVelocity, 0.0);
+      assertEquals(s.dead, false);
+      assertEquals(s.radius, 0.0);
+      assertEquals(time, 1.0);
+      
+      // teardown
+      Interface::isUpPress = isUp;
+   }
+   
+   /*********************************************
+    * name:    INPUT THRUST DIAGONAL
+    * input: dx=3.3, dy=4.4, radians=pi/4
+    *    v_1 = v_0 + a * t
+    *    a_x = thrust * sin(radians)
+    *    a_y = thrust * cos(radians)
+    * output: dx=3.3, dy=104.4, radians=pi/2
+    *********************************************/
+   void input_thrustDiagonal()
+   {
+      // setup
+      bool isUp = Interface::isUpPress;
+      
+      Ship s;
+      s.pos.x = 1.1;
+      s.pos.y = 2.2;
+      s.velocity.dx = 3.3;
+      s.velocity.dy = 4.4;
+      s.direction.radians = M_PI / 4.0;
+      s.dead = false;
+      s.angularVelocity = 0.0;
+      s.radius = 0.0;
+      
+      double time = 1.0;
+      
+      
+      Interface ui;
+      ui.isUpPress = true;
+      
+      // exercise
+      s.input(&ui, time);
+      
+      // verify
+      assertEquals(s.pos.x, 1.1);
+      assertEquals(s.pos.y, 2.2);
+      assertEquals(s.velocity.dx, 6.83553390593);
+      assertEquals(s.velocity.dy, 7.93553390593);
+      assertEquals(s.direction.radians, M_PI / 4.0);
+      assertEquals(s.angularVelocity, 0.0);
+      assertEquals(s.dead, false);
+      assertEquals(s.radius, 0.0);
+      assertEquals(time, 1.0);
+      
+      // teardown
+      Interface::isUpPress = isUp;
+   }
 };

@@ -31,6 +31,8 @@ using std::max;
 class Interface
 {
 public:
+   friend class TestShip;
+   
    Interface() {}
 
    // Constructor if you want to set up the window with anything but
