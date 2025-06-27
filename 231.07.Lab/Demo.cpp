@@ -15,6 +15,11 @@
 #include "star.h"
 #include "satellite.h"
 #include "GPS.h"
+#include "hubble.h"
+#include "starlink.h"
+#include "crewDragon.h"
+#include "sputnik.h"
+#include "ship.h"
 using namespace std;
 
 #define STARCOUNT 250
@@ -45,6 +50,21 @@ public:
       
       GPS * gps = new GPS(Position(0.0, 42164000.0), Velocity(-3100.0, 0.0), Angle(90.0), -0.00354751968747, 1.0);
       satellites.push_back(gps);
+      
+      Hubble * hubble = new Hubble(Position(0.0, 26560000.0), Velocity(-3880.0, 0.0), Angle(90.0), 0.0, 1.0);
+      satellites.push_back(hubble);
+      
+      Starlink * starlink = new Starlink(Position(23001634.72, 13280000.0), Velocity(-1940.0, 3360.18), Angle(150.0), 0.0, 1.0);
+      satellites.push_back(starlink);
+      
+      CrewDragon * crewDragon = new CrewDragon(Position(23001634.72, -13280000.0), Velocity(1940.0, 3360.18), Angle(30.0), 0.0, 1.0);
+      satellites.push_back(crewDragon);
+      
+      Sputnik * sputnik = new Sputnik(Position(0.0, -26560000.0), Velocity(3880.0, 0.0), Angle(270.0), 0.0, 1.0);
+      satellites.push_back(sputnik);
+      
+      Ship * ship = new Ship(Position(-23001634.72, -13280000.0), Velocity(1940.0, -3360.18), Angle(330.0), 0.0, 1.0);
+      satellites.push_back(ship);
    }
 
    Position ptUpperRight;
@@ -103,6 +123,7 @@ void callBack(const Interface* pUI, void* p)
    
    for (auto it = pDemo->satellites.begin(); it != pDemo->satellites.end(); ++it)
    {
+      (*it)->input(pUI);
       (*it)->move(TIME);
       (*it)->draw(&gout);
    }

@@ -46,7 +46,7 @@ public:
    
    virtual void draw(ogstream* pgout) const {}
    virtual void destroy(list<Satellite*> &satellites) {}
-   virtual void input(Interface* pUI) {}
+   virtual void input(const Interface* pUI) {}
    virtual void move(double time);
    
 protected:

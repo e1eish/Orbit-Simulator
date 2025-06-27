@@ -28,6 +28,11 @@ public:
    friend TestPosition;
    friend class TestSatellite;
    friend class TestGPS;
+   friend class TestHubble;
+   friend class TestStarlink;
+   friend class TestCrewDragon;
+   friend class TestSputnik;
+   friend class TestShip;
    
    // constructors
    Position()            : x(0.0), y(0.0)  {}

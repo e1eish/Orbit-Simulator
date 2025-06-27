@@ -2,7 +2,7 @@
  * Source File:
  *    Test : Test runner
  * Author:
- *    Br. Helfrich
+ *    Br. Helfrich, Ethan Leishman, Noah McSheehy
  * Summary:
  *    The test runner for all the unit tests
  ************************************************************************/
@@ -14,6 +14,11 @@
 #include "testAngle.h"
 #include "testSatellite.h"
 #include "testGPS.h"
+#include "testHubble.h"
+#include "testStarlink.h"
+#include "testCrewDragon.h"
+#include "testSputnik.h"
+#include "testShip.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -40,4 +45,9 @@ void testRunner()
    TestAngle().run();
    TestSatellite().run();
    TestGPS().run();
+   TestHubble().run();
+   TestStarlink().run();
+   TestCrewDragon().run();
+   TestSputnik().run();
+   TestShip().run();
 }

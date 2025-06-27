@@ -29,6 +29,11 @@ public:
    friend class TestAcceleration;
    friend class TestSatellite;
    friend class TestGPS;
+   friend class TestHubble;
+   friend class TestStarlink;
+   friend class TestCrewDragon;
+   friend class TestSputnik;
+   friend class TestShip;
    
    // constructors
    Acceleration()                         : ddx(0.0), ddy(0.0)         {}
