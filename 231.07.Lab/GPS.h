@@ -12,6 +12,8 @@
 #include "satellite.h"
 #include "uiDraw.h"
 
+#define GPSRADIUS 12.0
+
 using namespace std;
 
 
@@ -24,9 +26,9 @@ public:
    friend class Angle;
    
    
-   GPS() : Satellite() {}
-   GPS(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel, double radius) :
-               Satellite(pos, velocity, angle, angularVel, radius) {}
+   GPS() : Satellite() { radius = GPSRADIUS; }
+   GPS(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel) :
+      Satellite(pos, velocity, angle, angularVel) { radius = GPSRADIUS; }
    GPS(const GPS & rhs) :  Satellite(rhs) {}
    ~GPS() {}
    

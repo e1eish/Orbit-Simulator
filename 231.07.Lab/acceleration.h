@@ -34,6 +34,8 @@ public:
    friend class TestCrewDragon;
    friend class TestSputnik;
    friend class TestShip;
+   friend class TestPart;
+   friend class TestProjectile;
    
    // constructors
    Acceleration()                         : ddx(0.0), ddy(0.0)         {}

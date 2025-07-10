@@ -12,6 +12,8 @@
 #include "satellite.h"
 #include "uiDraw.h"
 
+#define SHIP_RADIUS 10.0
+
 using namespace std;
 
 
@@ -24,9 +26,9 @@ public:
    friend class Angle;
    
    
-   Ship() : Satellite(), isThrusting(false) {}
-   Ship(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel, double radius) :
-               Satellite(pos, velocity, angle, angularVel, radius), isThrusting((false)) {}
+   Ship() : Satellite(), isThrusting(false) { radius = SHIP_RADIUS; }
+   Ship(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel) :
+      Satellite(pos, velocity, angle, angularVel), isThrusting((false)) { radius = SHIP_RADIUS; }
    Ship(const Ship & rhs) :  Satellite(rhs), isThrusting(rhs.isThrusting) {}
    ~Ship() {}
    

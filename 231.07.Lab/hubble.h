@@ -12,6 +12,8 @@
 #include "satellite.h"
 #include "uiDraw.h"
 
+#define HUBBLE_RADIUS 10.0
+
 using namespace std;
 
 
@@ -24,9 +26,9 @@ public:
    friend class Angle;
    
    
-   Hubble() : Satellite() {}
-   Hubble(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel, double radius) :
-               Satellite(pos, velocity, angle, angularVel, radius) {}
+   Hubble() : Satellite() { radius = HUBBLE_RADIUS; }
+   Hubble(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel) :
+      Satellite(pos, velocity, angle, angularVel) { radius = HUBBLE_RADIUS; }
    Hubble(const Hubble & rhs) :  Satellite(rhs) {}
    ~Hubble() {}
    

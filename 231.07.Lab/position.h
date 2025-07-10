@@ -13,6 +13,7 @@
 
 #include <iostream> 
 #include <cmath>
+#include "angle.h"
 
 class TestPosition;
 class Acceleration;
@@ -33,6 +34,8 @@ public:
    friend class TestCrewDragon;
    friend class TestSputnik;
    friend class TestShip;
+   friend class TestPart;
+   friend class TestProjectile;
    
    // constructors
    Position()            : x(0.0), y(0.0)  {}
@@ -45,6 +48,13 @@ public:
    double getMetersY()       const { return y;                    }
    double getPixelsX()       const { return x / metersFromPixels; }
    double getPixelsY()       const { return y / metersFromPixels; }
+   
+   Angle  getAngle()         const
+   {
+      Angle a;
+      a.setRadians(atan2(y, x));
+      return a;
+   }
 
    // setters
    void setMeters(double xMeters, double yMeters) {x = xMeters; y = yMeters; }

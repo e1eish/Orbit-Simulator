@@ -12,6 +12,8 @@
 #include "satellite.h"
 #include "uiDraw.h"
 
+#define STARLINK_RADIUS 6.0
+
 using namespace std;
 
 
@@ -24,9 +26,9 @@ public:
    friend class Angle;
    
    
-   Starlink() : Satellite() {}
-   Starlink(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel, double radius) :
-               Satellite(pos, velocity, angle, angularVel, radius) {}
+   Starlink() : Satellite() { radius = STARLINK_RADIUS; }
+   Starlink(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel) :
+      Satellite(pos, velocity, angle, angularVel) { radius = STARLINK_RADIUS; }
    Starlink(const Starlink & rhs) :  Satellite(rhs) {}
    ~Starlink() {}
    

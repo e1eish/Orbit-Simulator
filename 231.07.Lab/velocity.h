@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "angle.h"
+
 // for unit tests
 class TestPosition;
 class TestVelocity;
@@ -16,7 +18,7 @@ class TestAcceleration;
 
 // for add()
 class Acceleration;
-class Angle;
+//class Angle;
 
  /*********************************************
   * Velocity
@@ -34,6 +36,8 @@ class Velocity
    friend class TestCrewDragon;
    friend class TestSputnik;
    friend class TestShip;
+   friend class TestPart;
+   friend class TestProjectile;
 
    
 public:
@@ -64,6 +68,13 @@ public:
    {
       dx += rhs.dx;
       dy += rhs.dy;
+   }
+   void addSpeed(double speed)
+   {
+      speed += getSpeed();
+      Angle a;
+      a.setRadians(getAngle().getRadians());
+      set(a, speed);
    }
    void reverse()
    {

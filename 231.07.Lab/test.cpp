@@ -19,6 +19,8 @@
 #include "testCrewDragon.h"
 #include "testSputnik.h"
 #include "testShip.h"
+#include "testPart.h"
+#include "testProjectile.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -50,4 +52,6 @@ void testRunner()
    TestCrewDragon().run();
    TestSputnik().run();
    TestShip().run();
+   TestPart().run();
+   TestProjectile().run();
 }

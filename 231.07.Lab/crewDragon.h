@@ -12,6 +12,8 @@
 #include "satellite.h"
 #include "uiDraw.h"
 
+#define DRAGON_RADIUS 7.0
+
 using namespace std;
 
 
@@ -24,9 +26,9 @@ public:
    friend class Angle;
    
    
-   CrewDragon() : Satellite() {}
-   CrewDragon(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel, double radius) :
-               Satellite(pos, velocity, angle, angularVel, radius) {}
+   CrewDragon() : Satellite() { radius = DRAGON_RADIUS; }
+   CrewDragon(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel) :
+      Satellite(pos, velocity, angle, angularVel) { radius = DRAGON_RADIUS; }
    CrewDragon(const CrewDragon & rhs) :  Satellite(rhs) {}
    ~CrewDragon() {}
    

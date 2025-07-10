@@ -40,6 +40,9 @@ public:
       // setter
       kill();
       
+      // destroy
+      destroy();
+      
       // getGravity()
       getGravity_onSurface();
       getGravity_above();
@@ -99,7 +102,7 @@ private:
       double angV = 5.5;
       double r = 6.6;
       // exercise
-      Satellite s(p, v, a, angV, r);
+      Satellite s(p, v, a, angV);
       // verify
       assertEquals(s.pos.x, 1.1);
       assertEquals(s.pos.y, 2.2);
@@ -284,6 +287,40 @@ private:
       
       // exercise
       s.kill();
+      
+      // verify
+      assertEquals(s.pos.x, 1.1);
+      assertEquals(s.pos.y, 2.2);
+      assertEquals(s.velocity.dx, 3.3);
+      assertEquals(s.velocity.dy, 4.4);
+      assertEquals(s.direction.radians, M_PI);
+      assertEquals(s.angularVelocity, 5.5);
+      assertEquals(s.dead, true);
+      assertEquals(s.radius, 6.6);
+   }  // teardown
+   
+   /*********************************************
+    * name:    DESTROY
+    * input:   pos.x=1.1, pos.y=2.2, v.dx=3.3, v.dy=4.4, dir=180.0 degrees, dead=false, angularVel=5.5, radius=6.6
+    * output:  isDead=true
+    *********************************************/
+   void destroy()
+   {
+      // setup
+      Satellite s;
+      s.pos.x = 1.1;
+      s.pos.y = 2.2;
+      s.velocity.dx = 3.3;
+      s.velocity.dy = 4.4;
+      s.direction.radians = M_PI;
+      s.dead = false;
+      s.angularVelocity = 5.5;
+      s.radius = 6.6;
+      
+      list<Satellite*> satellites;
+      
+      // exercise
+      s.destroy(satellites);
       
       // verify
       assertEquals(s.pos.x, 1.1);

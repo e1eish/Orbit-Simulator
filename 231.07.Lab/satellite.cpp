@@ -9,9 +9,11 @@
 
 #include "satellite.h"
 #include "acceleration.h"
+#include <cmath>
 
 #define EARTH_RADIUS 6378000.0
 #define GRAVITY 9.80665
+#define MAX_PART_RADIUS 10.0
 
 void Satellite::move(double time)
 {
@@ -45,4 +47,21 @@ Acceleration Satellite::getGravity() const
    
    Acceleration a(ddx, ddy);
    return a;
+}
+
+list<Position> Satellite::getDestructionPositions(int numberPositions, list<Satellite*> &satellites, Position & startPos) const
+{
+   list<Position> positions;
+   
+   double minDistance = (MAX_PART_RADIUS * numberPositions) / M_PI;
+   
+   for (int i = 0; i < numberPositions; i++)
+   {
+      double angle = (2 * M_PI / numberPositions) * i;
+      double x = pos.getPixelsX() * 1.1 + minDistance * sin(angle);
+      double y = pos.getPixelsY() * 1.1 + minDistance * cos(angle);
+      Position p(x, y);
+      positions.push_back(p);
+   }
+   return positions;
 }

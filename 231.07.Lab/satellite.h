@@ -28,14 +28,18 @@ public:
    friend class Position;
    friend class Velocity;
    friend class Angle;
+   friend class TestPart;
+   friend class TestProjectile;
    
    
-   Satellite() :  velocity(Velocity(0.0, 0.0)), pos(Position(0.0, 0.0)), direction(Angle(0.0)),
+   Satellite() : velocity(Velocity(0.0, 0.0)), pos(Position(0.0, 0.0)), direction(Angle(0.0)),
                   angularVelocity(0.0), dead(false), radius(0.0) {}
-   Satellite(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel, double radius) :
-               velocity(velocity), pos(pos), direction(angle), angularVelocity(angularVel), dead(false), radius(radius) {}
-   Satellite(const Satellite & rhs) :  velocity(rhs.velocity), pos(rhs.pos), direction(rhs.direction),
+   Satellite(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel) :
+               velocity(velocity), pos(pos), direction(angle), angularVelocity(angularVel), dead(false), radius(0.0) {}
+   Satellite(const Satellite & rhs) : velocity(rhs.velocity), pos(rhs.pos), direction(rhs.direction),
                                        angularVelocity(rhs.angularVelocity), dead(rhs.dead), radius(rhs.radius) {}
+   Satellite(const Satellite * rhs) : velocity(rhs->velocity), pos(rhs->pos), direction(rhs->direction),
+                                       angularVelocity(rhs->angularVelocity), dead(rhs->dead), radius(rhs->radius) {}
    ~Satellite() {}
    
    double getRadius() const { return radius; }
@@ -45,9 +49,11 @@ public:
    void kill() { dead = true; }
    
    virtual void draw(ogstream* pgout) const {}
-   virtual void destroy(list<Satellite*> &satellites) {}
+   virtual void destroy(list<Satellite*> &satellites) { kill(); }
    virtual void input(const Interface* pUI, double time) {}
    virtual void move(double time);
+   
+   Velocity getVelocity() const { return velocity; }
    
 protected:
    Position pos;
@@ -58,4 +64,6 @@ protected:
    double radius;
    
    Acceleration getGravity() const;
+   
+   list<Position> getDestructionPositions(int numberPositions, list<Satellite*> &satellites, Position & startPos) const;
 };

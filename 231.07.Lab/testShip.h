@@ -19,7 +19,7 @@
 #define EARTH_RADIUS 6378000.0
 #define GRAVITY 9.80665
 #define ROTATION_SPEED 0.05
-#define THRUST 5.0
+#define THRUST 2.0
 
 /*******************************
  * TEST Ship
@@ -111,7 +111,7 @@ private:
       double angV = 5.5;
       double r = 6.6;
       // exercise
-      Ship s(p, v, a, angV, r);
+      Ship s(p, v, a, angV);
       // verify
       assertEquals(s.pos.x, 1.1);
       assertEquals(s.pos.y, 2.2);
@@ -615,7 +615,7 @@ private:
       assertEquals(s.pos.y, 2.2);
       assertEquals(s.velocity.dx, 3.3);
       assertEquals(s.velocity.dy, 4.4);
-      assertEquals(s.direction.radians, 0.95);
+      assertEquals(s.direction.radians, 0.9);
       assertEquals(s.angularVelocity, 0.0);
       assertEquals(s.dead, false);
       assertEquals(s.radius, 0.0);
@@ -659,7 +659,7 @@ private:
       assertEquals(s.pos.y, 2.2);
       assertEquals(s.velocity.dx, 3.3);
       assertEquals(s.velocity.dy, 4.4);
-      assertEquals(s.direction.radians, 1.05);
+      assertEquals(s.direction.radians, 1.1);
       assertEquals(s.angularVelocity, 0.0);
       assertEquals(s.dead, false);
       assertEquals(s.radius, 0.0);
@@ -703,7 +703,7 @@ private:
       assertEquals(s.pos.x, 1.1);
       assertEquals(s.pos.y, 2.2);
       assertEquals(s.velocity.dx, 3.3);
-      assertEquals(s.velocity.dy, 9.4);
+      assertEquals(s.velocity.dy, 6.4);
       assertEquals(s.direction.radians, 0.0);
       assertEquals(s.angularVelocity, 0.0);
       assertEquals(s.dead, false);
@@ -747,7 +747,7 @@ private:
       // verify
       assertEquals(s.pos.x, 1.1);
       assertEquals(s.pos.y, 2.2);
-      assertEquals(s.velocity.dx, 8.3);
+      assertEquals(s.velocity.dx, 5.3);
       assertEquals(s.velocity.dy, 4.4);
       assertEquals(s.direction.radians, M_PI / 2.0);
       assertEquals(s.angularVelocity, 0.0);
@@ -794,8 +794,8 @@ private:
       // verify
       assertEquals(s.pos.x, 1.1);
       assertEquals(s.pos.y, 2.2);
-      assertEquals(s.velocity.dx, 6.83553390593);
-      assertEquals(s.velocity.dy, 7.93553390593);
+      assertEquals(s.velocity.dx, 4.71421356237);
+      assertEquals(s.velocity.dy, 5.81421356237);
       assertEquals(s.direction.radians, M_PI / 4.0);
       assertEquals(s.angularVelocity, 0.0);
       assertEquals(s.dead, false);

@@ -28,6 +28,8 @@ using namespace std;
 #define FRAMERATE 30.0
 #define TIME (24.0 * 60.0) / FRAMERATE
 
+#define ROTATION -0.00701141736517
+
 /*************************************************************************
  * Demo
  * Test structure to capture the LM that will move around the screen
@@ -48,22 +50,40 @@ public:
       // gps 5: p.x= -23001634.72, p.y= -13280000.0, v.dx=  1940.0, v.dy= -3360.18, angle= 11pi/6
       // gps 6: p.x= -23001634.72, p.y=  13280000.0, v.dx= -1940.0, v.dy= -3360.18, angle= 7pi/6
       
-      GPS * gps = new GPS(Position(0.0, 42164000.0), Velocity(-3100.0, 0.0), Angle(90.0), -0.00354751968747, 1.0);
-      satellites.push_back(gps);
+      GPS * gps1 = new GPS(Position(0.0, 26560000.0), Velocity(-3880.0, 0.0), Angle(90.0), ROTATION);
+      satellites.push_back(gps1);
       
-      Hubble * hubble = new Hubble(Position(0.0, 26560000.0), Velocity(-3880.0, 0.0), Angle(90.0), 0.0, 1.0);
-      satellites.push_back(hubble);
+      GPS * gps2 = new GPS(Position(23001634.72, 13280000.0), Velocity(-1940.0, 3360.18), Angle(150.0), ROTATION);
+      satellites.push_back(gps2);
       
-      Starlink * starlink = new Starlink(Position(23001634.72, 13280000.0), Velocity(-1940.0, 3360.18), Angle(150.0), 0.0, 1.0);
-      satellites.push_back(starlink);
+      GPS * gps3 = new GPS(Position(23001634.72, -13280000.0), Velocity(1940.0, 3360.18), Angle(30.0), ROTATION);
+      satellites.push_back(gps3);
       
-      CrewDragon * crewDragon = new CrewDragon(Position(23001634.72, -13280000.0), Velocity(1940.0, 3360.18), Angle(30.0), 0.0, 1.0);
-      satellites.push_back(crewDragon);
+      GPS * gps4 = new GPS(Position(0.0, -26560000.0), Velocity(3880.0, 0.0), Angle(270.0), ROTATION);
+      satellites.push_back(gps4);
       
-      Sputnik * sputnik = new Sputnik(Position(0.0, -26560000.0), Velocity(3880.0, 0.0), Angle(270.0), 0.0, 1.0);
+      GPS * gps5 = new GPS(Position(-23001634.72, -13280000.0), Velocity(1940.0, -3360.18), Angle(330.0), ROTATION);
+      satellites.push_back(gps5);
+      
+      GPS * gps6 = new GPS(Position(-23001634.72, 13280000.0), Velocity(-1940.0, -3360.18), Angle(210.0), ROTATION);
+      satellites.push_back(gps6);
+      
+      Sputnik * sputnik = new Sputnik(Position(-36515095.13, 21082000.0), Velocity(2050.0, 2684.68), Angle(90.0), 0.0);
       satellites.push_back(sputnik);
       
-      Ship * ship = new Ship(Position(-23001634.72, -13280000.0), Velocity(1940.0, -3360.18), Angle(330.0), 0.0, 1.0);
+      Hubble * hubble = new Hubble(Position(0.0, -42164000.0), Velocity(3100.0, 0.0), Angle(90.0), 0.0);
+      satellites.push_back(hubble);
+      
+      CrewDragon * dragon = new CrewDragon(Position(0.0, 8000000.0), Velocity(-7900.0, 0.0), Angle(90.0), 0.0);
+      satellites.push_back(dragon);
+      
+      Starlink * starlink = new Starlink(Position(0.0, -13020000.0), Velocity(5800.0, 0.0), Angle(90.0), 0.0);
+      satellites.push_back(starlink);
+      
+      Position shipPos;
+      shipPos.setPixelsX(-450.0);
+      shipPos.setPixelsY(450.0);
+      Ship * ship = new Ship(shipPos, Velocity(0.0, -2000), Angle(90.0), 0.0);
       satellites.push_back(ship);
    }
 
@@ -121,18 +141,19 @@ void callBack(const Interface* pUI, void* p)
    Position pt;
    ogstream gout(pt);
    
-   for (auto it = pDemo->satellites.begin(); it != pDemo->satellites.end(); ++it)
-   {
-      (*it)->input(pUI, TIME);
-      (*it)->move(TIME);
-      (*it)->draw(&gout);
-   }
-
    // draw stars
    for (int i = 0; i < STARCOUNT; i++)
    {
       pDemo->stars[i].phase++;
       gout.drawStar(pDemo->stars[i].pos, pDemo->stars[i].phase);
+   }
+   
+   // move and draw satellites
+   for (auto it = pDemo->satellites.begin(); it != pDemo->satellites.end(); ++it)
+   {
+      (*it)->input(pUI, TIME);
+      (*it)->move(TIME);
+      (*it)->draw(&gout);
    }
 
    // draw the earth

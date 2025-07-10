@@ -12,6 +12,8 @@
 #include "satellite.h"
 #include "uiDraw.h"
 
+#define SPUTNIK_RADIUS 4.0
+
 using namespace std;
 
 
@@ -24,9 +26,9 @@ public:
    friend class Angle;
    
    
-   Sputnik() : Satellite() {}
-   Sputnik(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel, double radius) :
-               Satellite(pos, velocity, angle, angularVel, radius) {}
+   Sputnik() : Satellite() { }
+   Sputnik(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel) :
+      Satellite(pos, velocity, angle, angularVel) { radius = SPUTNIK_RADIUS; }
    Sputnik(const Sputnik & rhs) :  Satellite(rhs) {}
    ~Sputnik() {}
    

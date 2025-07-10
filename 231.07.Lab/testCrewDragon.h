@@ -99,7 +99,7 @@ private:
       double angV = 5.5;
       double r = 6.6;
       // exercise
-      CrewDragon s(p, v, a, angV, r);
+      CrewDragon s(p, v, a, angV);
       // verify
       assertEquals(s.pos.x, 1.1);
       assertEquals(s.pos.y, 2.2);

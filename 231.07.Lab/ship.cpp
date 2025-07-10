@@ -11,8 +11,8 @@
 #include "uiInteract.h"
 #include "acceleration.h"
 
-#define ROTATION_SPEED 0.05
-#define THRUST 5.0
+#define ROTATION_SPEED 0.1
+#define THRUST 2.0
 
 void Ship::input(const Interface* pUI, double time)
 {
