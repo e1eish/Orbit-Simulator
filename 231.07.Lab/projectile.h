@@ -24,11 +24,11 @@ public:
    friend class Angle;
    
    
-   Projectile() : Satellite() {}
+   Projectile() : Satellite(), timer(0) {}
    Projectile(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel) :
-               Satellite(pos, velocity, angle, angularVel) {}
-   Projectile(const Projectile & rhs) :  Satellite(rhs) {}
-   Projectile(const Satellite * rhs, const Angle & angle) : Satellite(rhs)
+               Satellite(pos, velocity, angle, angularVel), timer(random(50,100)) {}
+   Projectile(const Projectile & rhs) :  Satellite(rhs), timer(random(50,100)) {}
+   Projectile(const Satellite * rhs, const Angle & angle) : Satellite(*rhs), timer(random(50,100))
    {
       direction = angle;
       angularVelocity = random(-0.5, 0.5);
@@ -46,7 +46,7 @@ public:
    }
 
 private:
-   unsigned short timer;
+   short timer;
 };
 
 class ProjectileStub : public Projectile

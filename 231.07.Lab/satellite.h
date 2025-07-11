@@ -38,9 +38,13 @@ public:
                velocity(velocity), pos(pos), direction(angle), angularVelocity(angularVel), dead(false), radius(0.0) {}
    Satellite(const Satellite & rhs) : velocity(rhs.velocity), pos(rhs.pos), direction(rhs.direction),
                                        angularVelocity(rhs.angularVelocity), dead(rhs.dead), radius(rhs.radius) {}
-   Satellite(const Satellite * rhs) : velocity(rhs->velocity), pos(rhs->pos), direction(rhs->direction),
-                                       angularVelocity(rhs->angularVelocity), dead(rhs->dead), radius(rhs->radius) {}
+   /*Satellite(const Satellite * rhs) : velocity(rhs->velocity), pos(rhs->pos), direction(rhs->direction),
+                                       angularVelocity(rhs->angularVelocity), dead(rhs->dead), radius(rhs->radius) {}*/
    ~Satellite() {}
+   
+   void setPosition(const Position & rhs) { pos = rhs;       }
+   void setVelocity(const Velocity & rhs) { velocity = rhs;  }
+   void setDirection(const Angle & rhs)   { direction = rhs; }
    
    double getRadius() const { return radius; }
    Position getPosition() const { return pos; }
@@ -50,7 +54,7 @@ public:
    
    virtual void draw(ogstream* pgout) const {}
    virtual void destroy(list<Satellite*> &satellites) { kill(); }
-   virtual void input(const Interface* pUI, double time) {}
+   virtual void input(const Interface* pUI, list<Satellite*> &satellites, double time) {}
    virtual void move(double time);
    
    Velocity getVelocity() const { return velocity; }
@@ -65,5 +69,6 @@ protected:
    
    Acceleration getGravity() const;
    
-   list<Position> getDestructionPositions(int numberPositions, list<Satellite*> &satellites, Position & startPos) const;
+   vector<Position> getDestructionPositions(int numberPositions);
+   void adjustSatellite(Satellite * satellite, Position & startPos, Position & adjustPos, Velocity & startVelocity);
 };

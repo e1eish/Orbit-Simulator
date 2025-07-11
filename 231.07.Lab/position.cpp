@@ -29,6 +29,17 @@ Position& Position::operator = (const Position& pt)
 }
 
 /******************************************
+ * POINT : ADDITION
+ * Add two points together
+ *****************************************/
+Position& Position::operator + (const Position& pt)
+{
+   x += pt.x;
+   y += pt.y;
+   return *this;
+}
+
+/******************************************
  * POSITION insertion
  *       Display coordinates on the screen
  *****************************************/

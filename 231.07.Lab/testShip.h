@@ -601,6 +601,8 @@ private:
       s.angularVelocity = 0.0;
       s.radius = 0.0;
       
+      list<Satellite*> satellites;
+      
       double time = 1.0;
       
       
@@ -608,7 +610,7 @@ private:
       ui.isLeftPress = true;
       
       // exercise
-      s.input(&ui, time);
+      s.input(&ui, satellites, time);
       
       // verify
       assertEquals(s.pos.x, 1.1);
@@ -645,6 +647,8 @@ private:
       s.angularVelocity = 0.0;
       s.radius = 0.0;
       
+      list<Satellite*> satellites;
+      
       double time = 1.0;
       
       
@@ -652,7 +656,7 @@ private:
       ui.isRightPress = true;
       
       // exercise
-      s.input(&ui, time);
+      s.input(&ui, satellites, time);
       
       // verify
       assertEquals(s.pos.x, 1.1);
@@ -690,6 +694,8 @@ private:
       s.angularVelocity = 0.0;
       s.radius = 0.0;
       
+      list<Satellite*> satellites;
+      
       double time = 1.0;
       
       
@@ -697,7 +703,7 @@ private:
       ui.isUpPress = true;
       
       // exercise
-      s.input(&ui, time);
+      s.input(&ui, satellites, time);
       
       // verify
       assertEquals(s.pos.x, 1.1);
@@ -735,6 +741,8 @@ private:
       s.angularVelocity = 0.0;
       s.radius = 0.0;
       
+      list<Satellite*> satellites;
+      
       double time = 1.0;
       
       
@@ -742,7 +750,7 @@ private:
       ui.isUpPress = true;
       
       // exercise
-      s.input(&ui, time);
+      s.input(&ui, satellites, time);
       
       // verify
       assertEquals(s.pos.x, 1.1);
@@ -782,6 +790,8 @@ private:
       s.angularVelocity = 0.0;
       s.radius = 0.0;
       
+      list<Satellite*> satellites;
+      
       double time = 1.0;
       
       
@@ -789,7 +799,7 @@ private:
       ui.isUpPress = true;
       
       // exercise
-      s.input(&ui, time);
+      s.input(&ui, satellites, time);
       
       // verify
       assertEquals(s.pos.x, 1.1);

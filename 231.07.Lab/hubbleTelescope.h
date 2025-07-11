@@ -12,7 +12,7 @@
 #include "part.h"
 #include "uiDraw.h"
 
-#define TELESCOPERADIUS 10.0
+#define TELESCOPE_RADIUS 10.0
 
 using namespace std;
 
@@ -25,13 +25,20 @@ public:
    friend class Angle;
    
    
-   HubbleTelescope() : Part() { radius = TELESCOPERADIUS; }
-   HubbleTelescope(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel, double radius) :
-      Part(pos, velocity, angle, angularVel) { radius = TELESCOPERADIUS; }
+   HubbleTelescope() : Part() { radius = TELESCOPE_RADIUS; }
+   HubbleTelescope(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel) :
+      Part(pos, velocity, angle, angularVel) { radius = TELESCOPE_RADIUS; }
    HubbleTelescope(const GPSCenter & rhs) :  Part(rhs) {}
    HubbleTelescope(const Satellite * rhs, const Angle & angle) :  Part(const Satellite * rhs, const Angle & angle) {}
    ~HubbleTelescope() {}
    
    virtual void draw(ogstream* pgout) const { pgout->drawHubbleTelescope(pos, direction.getRadians()); }
+   
+   virtual void destroy(list<Satellite*> &satellites)
+   {
+      generateFragments(satellites, 3);
+      
+      kill();
+   }
 };
 

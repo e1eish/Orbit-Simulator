@@ -12,6 +12,8 @@
 #include "part.h"
 #include "uiDraw.h"
 
+#define STARLINK_ARRAY_RADIUS 4.0
+
 using namespace std;
 
 
@@ -23,13 +25,20 @@ public:
    friend class Angle;
    
    
-   StarlinkArray() : Part() {}
-   StarlinkArray(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel, double radius) :
-               Part(pos, velocity, angle, angularVel, radius) {}
+   StarlinkArray() : Part() { radius = STARLINK_ARRAY_RADIUS; }
+   StarlinkArray(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel) :
+      Part(pos, velocity, angle, angularVel) { radius = STARLINK_ARRAY_RADIUS; }
    StarlinkArray(const StarlinkArray & rhs) :  Part(rhs) {}
    StarlinkArray(const Satellite * rhs, const Angle & angle) :  Part(const Satellite * rhs, const Angle & angle) {}
    ~StarlinkArray() {}
    
    virtual void draw(ogstream* pgout) const { pgout->drawStarlinkArray(pos, direction.getRadians()); }
+   
+   virtual void destroy(list<Satellite*> &satellites)
+   {
+      generateFragments(satellites, 3);
+      
+      kill();
+   }
 };
 

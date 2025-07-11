@@ -12,6 +12,8 @@
 #include "part.h"
 #include "uiDraw.h"
 
+#define GPS_RIGHT_RADIUS 8.0
+
 using namespace std;
 
 
@@ -23,13 +25,20 @@ public:
    friend class Angle;
    
    
-   GPSRight() : Part() {}
-   GPSRight(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel, double radius) :
-               Part(pos, velocity, angle, angularVel, radius) {}
-   GPSRight(const GPSRight & rhs) :  part(rhs) {}
-   GPSRight(const Satellite * rhs, const Angle & angle) :  Part(const Satellite * rhs, const Angle & angle) {}
+   GPSRight() : Part() { radius = GPS_RIGHT_RADIUS; }
+   GPSRight(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel) :
+      Part(pos, velocity, angle, angularVel) { radius = GPS_RIGHT_RADIUS; }
+   GPSRight(const GPSRight & rhs) :  Part(rhs) {}
+   GPSRight(const Satellite * rhs, const Angle & angle) :  Part(rhs, angle) {}
    ~GPSRight() {}
    
    virtual void draw(ogstream* pgout) const { pgout->drawGPSRight(pos, direction.getRadians()); }
+   
+   virtual void destroy(list<Satellite*> &satellites)
+   {
+      generateFragments(satellites, 3);
+      
+      kill();
+   }
 };
 

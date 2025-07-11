@@ -13,7 +13,7 @@
 
 #define EARTH_RADIUS 6378000.0
 #define GRAVITY 9.80665
-#define MAX_PART_RADIUS 10.0
+#define MAX_PART_RADIUS 20.0
 
 void Satellite::move(double time)
 {
@@ -49,9 +49,9 @@ Acceleration Satellite::getGravity() const
    return a;
 }
 
-list<Position> Satellite::getDestructionPositions(int numberPositions, list<Satellite*> &satellites, Position & startPos) const
+vector<Position> Satellite::getDestructionPositions(int numberPositions)
 {
-   list<Position> positions;
+   vector<Position> positions;
    
    double minDistance = (MAX_PART_RADIUS * numberPositions) / M_PI;
    
@@ -64,4 +64,20 @@ list<Position> Satellite::getDestructionPositions(int numberPositions, list<Sate
       positions.push_back(p);
    }
    return positions;
+}
+
+
+void Satellite::adjustSatellite(Satellite * satellite, Position & startPos, Position & adjustPos, Velocity & startVelocity)
+{
+   Angle a = adjustPos.getAngle();
+   adjustPos.addMetersX(pos.getMetersX()); // add the new position difference to the beginning position to get the resultant position
+   adjustPos.addMetersY(pos.getMetersY());
+   
+   Velocity v;
+   v.set(a, random(0.0, 200.0)); // add a random velocity in the direction the fragmment is moving
+   v = v + startVelocity;
+   
+   (*satellite).setPosition(adjustPos);
+   (*satellite).setVelocity(v);
+   (*satellite).setDirection(a);
 }

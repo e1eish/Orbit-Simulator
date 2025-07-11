@@ -50,6 +50,15 @@ public:
       // gps 5: p.x= -23001634.72, p.y= -13280000.0, v.dx=  1940.0, v.dy= -3360.18, angle= 11pi/6
       // gps 6: p.x= -23001634.72, p.y=  13280000.0, v.dx= -1940.0, v.dy= -3360.18, angle= 7pi/6
       
+      Position shipPos;
+      shipPos.setPixelsX(-450.0);
+      shipPos.setPixelsY(450.0);
+      Ship * ship = new Ship(shipPos, Velocity(0.0, -2000), Angle(90.0), 0.0);
+      satellites.push_back(ship);
+      
+      Hubble * hubble = new Hubble(Position(0.0, -42164000.0), Velocity(3100.0, 0.0), Angle(90.0), 0.0);
+      satellites.push_back(hubble);
+      
       GPS * gps1 = new GPS(Position(0.0, 26560000.0), Velocity(-3880.0, 0.0), Angle(90.0), ROTATION);
       satellites.push_back(gps1);
       
@@ -71,22 +80,56 @@ public:
       Sputnik * sputnik = new Sputnik(Position(-36515095.13, 21082000.0), Velocity(2050.0, 2684.68), Angle(90.0), 0.0);
       satellites.push_back(sputnik);
       
-      Hubble * hubble = new Hubble(Position(0.0, -42164000.0), Velocity(3100.0, 0.0), Angle(90.0), 0.0);
-      satellites.push_back(hubble);
-      
       CrewDragon * dragon = new CrewDragon(Position(0.0, 8000000.0), Velocity(-7900.0, 0.0), Angle(90.0), 0.0);
       satellites.push_back(dragon);
       
       Starlink * starlink = new Starlink(Position(0.0, -13020000.0), Velocity(5800.0, 0.0), Angle(90.0), 0.0);
       satellites.push_back(starlink);
-      
-      Position shipPos;
-      shipPos.setPixelsX(-450.0);
-      shipPos.setPixelsY(450.0);
-      Ship * ship = new Ship(shipPos, Velocity(0.0, -2000), Angle(90.0), 0.0);
-      satellites.push_back(ship);
    }
 
+   
+//   double computeDistance(Position pos1, Position pos2)
+//   {
+//      double x = pos1.getMetersX() - pos2.getMetersX();
+//      double y = pos1.getMetersY() - pos2.getMetersY();
+//      double c = sqrt((x * x) + (y * y));
+//      return c;
+//   }
+   
+   void move()
+   {
+      for (auto it = satellites.begin(); it != satellites.end(); it++)
+         (*it)->move(TIME);
+      
+      for (auto it1 = satellites.begin(); it1 != satellites.end(); it1++)
+      {
+         double distance = computeDistance((*it1)->getPosition(), Position(0.0, 0.0));
+         if (distance < ((*it1)->getRadius() + EARTH_RADIUS))
+            (*it1)->kill();
+         
+         //auto it2 = it1;
+         //it2++;
+         for (auto it2 = next(it1); it2 != satellites.end(); it2++)
+            if ((*it1)->isDead() == false && (*it2)->isDead() == false)
+            {
+               distance = computeDistance((*it1)->getPosition(), (*it2)->getPosition());
+               if (distance < ((*it1)->getRadius() + (*it2)->getRadius()))
+               {
+                  (*it1)->kill();
+                  (*it2)->kill();
+               }
+            }
+      }
+      
+      for (auto it = satellites.begin(); it != satellites.end(); it++)
+         if ((*it)->isDead())
+         {
+            (*it)->destroy(satellites);
+            //delete (*it);
+            it = satellites.erase(it);
+         }
+   }
+   
    Position ptUpperRight;
    
    list<Satellite*> satellites;
@@ -96,6 +139,10 @@ public:
 
    double angleEarth;
 };
+
+
+
+
 
 /*************************************
  * All the interesting work happens here, when
@@ -148,13 +195,15 @@ void callBack(const Interface* pUI, void* p)
       gout.drawStar(pDemo->stars[i].pos, pDemo->stars[i].phase);
    }
    
-   // move and draw satellites
+   // give input to satellites
    for (auto it = pDemo->satellites.begin(); it != pDemo->satellites.end(); ++it)
-   {
-      (*it)->input(pUI, TIME);
-      (*it)->move(TIME);
+      (*it)->input(pUI, pDemo->satellites, TIME);
+   
+   pDemo->move();
+   
+   // draw satellites
+   for (auto it = pDemo->satellites.begin(); it != pDemo->satellites.end(); ++it)
       (*it)->draw(&gout);
-   }
 
    // draw the earth
    pt.setMeters(0.0, 0.0);

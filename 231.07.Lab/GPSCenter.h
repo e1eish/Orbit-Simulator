@@ -13,7 +13,7 @@
 #include "fragment.h"
 #include "uiDraw.h"
 
-#define GPSCENTERRADIUS 7.0
+#define GPS_CENTER_RADIUS 7.0
 
 using namespace std;
 
@@ -26,26 +26,18 @@ public:
    friend class Angle;
    
    
-   GPSCenter() : Part() { radius = GPSCENTERRADIUS; }
+   GPSCenter() : Part() { radius = GPS_CENTER_RADIUS; }
    GPSCenter(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel, double radius) :
-      Part(pos, velocity, angle, angularVel) { radius = GPSCENTERRADIUS; }
+      Part(pos, velocity, angle, angularVel) { radius = GPS_CENTER_RADIUS; }
    GPSCenter(const GPSCenter & rhs) :  Part(rhs) {}
-   GPSCenter(const Satellite * rhs, const Angle & angle) :  Part(const Satellite * rhs, const Angle & angle) {}
+   GPSCenter(const Satellite * rhs, const Angle & angle) :  Part(rhs, angle) {}
    ~GPSCenter() {}
    
    virtual void draw(ogstream* pgout) const { pgout->drawGPSCenter(pos, direction.getRadians()); }
    
    virtual void destroy(list<Satellite*> &satellites)
    {
-      list<Position> positions = getDestructionPositions(3, maxRadius);
-      for (int i = 0; i < size(positions); i++)
-      {
-         Angle a = positions[i].getAngle();
-         Fragment * fragment = new Fragment(Position(positions[i].addMetersX(pos.getMetersX),
-                                                     positions[i].addMetersY(pos.getMetersY)),
-                                            velocity, a);
-         satellites.push_back(fragment);
-      }
+      generateFragments(satellites, 3);
       
       kill();
    }

@@ -11,6 +11,7 @@
 
 #include "satellite.h"
 #include "uiDraw.h"
+#include "fragment.h"
 
 using namespace std;
 
@@ -28,7 +29,7 @@ public:
    Part(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel) :
                Satellite(pos, velocity, angle, angularVel) {}
    Part(const Part & rhs) :  Satellite(rhs) {}
-   Part(const Satellite * rhs, const Angle & angle) : Satellite(rhs)
+   Part(const Satellite * rhs, const Angle & angle) : Satellite(*rhs)
    {
       direction = angle;
       angularVelocity = random(-0.5, 0.5);
@@ -36,6 +37,29 @@ public:
    }
    ~Part() {}
    
+   // generate fragments in positions that do not collide
+   virtual void generateFragments(list<Satellite*> &satellites, int count)
+   {
+      vector<Position> positions = getDestructionPositions(count);
+      for (auto it = positions.begin(); it != positions.end(); it++)
+      {
+         /*Angle a = (*it).getAngle();
+         (*it).addMetersX(pos.getMetersX()); // add the new position difference to the beginning position to get the resultant position
+         (*it).addMetersY(pos.getMetersY());
+         
+         Velocity v;
+         v.set(a, random(0.0, 200.0)); // add a random velocity in the direction the fragmment is moving
+         v = v + velocity;
+         
+         Fragment * fragment = new Fragment(Position((*it).getMetersX(),
+                                                     (*it).getMetersY()),
+                                            v, a);*/
+         
+         Fragment * fragment = new Fragment();
+         adjustSatellite(fragment, pos, *it, velocity);
+         satellites.push_back(fragment);
+      }
+   }
 };
 
 class PartStub : public Part

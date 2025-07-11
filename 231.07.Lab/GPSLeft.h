@@ -29,9 +29,16 @@ public:
    GPSLeft(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel) :
       Part(pos, velocity, angle, angularVel) { radius = GPS_LEFT_RADIUS; }
    GPSLeft(const GPSLeft & rhs) :  Part(rhs) {}
-   GPSLeft(const Satellite * rhs, const Angle & angle) :  Part(const Satellite * rhs, const Angle & angle) {}
+   GPSLeft(const Satellite * rhs, const Angle & angle) :  Part(rhs, angle) {}
    ~GPSLeft() {}
    
    virtual void draw(ogstream* pgout) const { pgout->drawGPSLeft(pos, direction.getRadians()); }
+   
+   virtual void destroy(list<Satellite*> &satellites)
+   {
+      generateFragments(satellites, 3);
+      
+      kill();
+   }
 };
 

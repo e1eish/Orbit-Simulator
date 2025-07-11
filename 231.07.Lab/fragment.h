@@ -12,7 +12,7 @@
 #include "projectile.h"
 #include "uiDraw.h"
 
-#define FRAGMENTRADIUS 2.0
+#define FRAGMENT_RADIUS 2.0
 
 using namespace std;
 
@@ -20,12 +20,12 @@ using namespace std;
 class Fragment : public Projectile
 {
 public:
-   Fragment() : Projectile() { radius = FRAGMENTRADIUS; }
-   Fragment(const Position & pos, const Velocity & velocity, const Angle & angle) :
+   Fragment() : Projectile() { radius = FRAGMENT_RADIUS; }
+   Fragment(const Position & pos, Velocity & velocity, const Angle & angle) :
    Projectile(pos, velocity, angle, random(-0.5, 0.5))
    {
       velocity.addSpeed(random(0.0, 500.0));
-      radius = FRAGMENTRADIUS;
+      radius = FRAGMENT_RADIUS;
    }
    Fragment(const Fragment & rhs) :  Projectile(rhs) {}
    Fragment(const Satellite * rhs, const Angle & angle) : Projectile(rhs, angle) {}
