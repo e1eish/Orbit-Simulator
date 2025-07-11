@@ -13,7 +13,7 @@
 
 #define EARTH_RADIUS 6378000.0
 #define GRAVITY 9.80665
-#define MAX_PART_RADIUS 20.0
+#define MAX_PART_RADIUS 2000000.0
 
 void Satellite::move(double time)
 {
@@ -58,8 +58,8 @@ vector<Position> Satellite::getDestructionPositions(int numberPositions)
    for (int i = 0; i < numberPositions; i++)
    {
       double angle = (2 * M_PI / numberPositions) * i;
-      double x = pos.getPixelsX() * 1.1 + minDistance * sin(angle);
-      double y = pos.getPixelsY() * 1.1 + minDistance * cos(angle);
+      double x = pos.getPixelsX() + 2.0 * minDistance * sin(angle);
+      double y = pos.getPixelsY() + 2.0 * minDistance * cos(angle);
       Position p(x, y);
       positions.push_back(p);
    }
@@ -70,8 +70,8 @@ vector<Position> Satellite::getDestructionPositions(int numberPositions)
 void Satellite::adjustSatellite(Satellite * satellite, Position & startPos, Position & adjustPos, Velocity & startVelocity)
 {
    Angle a = adjustPos.getAngle();
-   adjustPos.addMetersX(pos.getMetersX()); // add the new position difference to the beginning position to get the resultant position
-   adjustPos.addMetersY(pos.getMetersY());
+   adjustPos.addPixelsX(pos.getPixelsX()); // add the new position difference to the beginning position to get the resultant position
+   adjustPos.addPixelsY(pos.getPixelsY());
    
    Velocity v;
    v.set(a, random(0.0, 200.0)); // add a random velocity in the direction the fragmment is moving

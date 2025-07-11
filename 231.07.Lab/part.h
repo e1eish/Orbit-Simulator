@@ -41,22 +41,28 @@ public:
    virtual void generateFragments(list<Satellite*> &satellites, int count)
    {
       vector<Position> positions = getDestructionPositions(count);
-      for (auto it = positions.begin(); it != positions.end(); it++)
+//      for (auto it = positions.begin(); it != positions.end(); it++)
+//      {
+//         /*Angle a = (*it).getAngle();
+//         (*it).addMetersX(pos.getMetersX()); // add the new position difference to the beginning position to get the resultant position
+//         (*it).addMetersY(pos.getMetersY());
+//         
+//         Velocity v;
+//         v.set(a, random(0.0, 200.0)); // add a random velocity in the direction the fragmment is moving
+//         v = v + velocity;
+//         
+//         Fragment * fragment = new Fragment(Position((*it).getMetersX(),
+//                                                     (*it).getMetersY()),
+//                                            v, a);*/
+//         
+//         Fragment * fragment = new Fragment();
+//         adjustSatellite(fragment, pos, *it, velocity);
+//         satellites.push_back(fragment);
+//      }
+      for (int i = 0; i < count; i++)
       {
-         /*Angle a = (*it).getAngle();
-         (*it).addMetersX(pos.getMetersX()); // add the new position difference to the beginning position to get the resultant position
-         (*it).addMetersY(pos.getMetersY());
-         
-         Velocity v;
-         v.set(a, random(0.0, 200.0)); // add a random velocity in the direction the fragmment is moving
-         v = v + velocity;
-         
-         Fragment * fragment = new Fragment(Position((*it).getMetersX(),
-                                                     (*it).getMetersY()),
-                                            v, a);*/
-         
          Fragment * fragment = new Fragment();
-         adjustSatellite(fragment, pos, *it, velocity);
+         adjustSatellite(fragment, pos, positions[i], velocity);
          satellites.push_back(fragment);
       }
    }

@@ -24,7 +24,7 @@ public:
    Fragment(const Position & pos, Velocity & velocity, const Angle & angle) :
    Projectile(pos, velocity, angle, random(-0.5, 0.5))
    {
-      velocity.addSpeed(random(0.0, 500.0));
+      //velocity.addSpeed(random(0.0, 500.0));
       radius = FRAGMENT_RADIUS;
    }
    Fragment(const Fragment & rhs) :  Projectile(rhs) {}

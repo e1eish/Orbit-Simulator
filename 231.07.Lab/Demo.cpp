@@ -104,11 +104,9 @@ public:
       for (auto it1 = satellites.begin(); it1 != satellites.end(); it1++)
       {
          double distance = computeDistance((*it1)->getPosition(), Position(0.0, 0.0));
-//         if (distance < ((*it1)->getRadius() + (EARTH_RADIUS / 40.0)))
-//            (*it1)->kill();
+         if (distance < ((*it1)->getRadius() + 50))
+            (*it1)->kill();
          
-         //auto it2 = it1;
-         //it2++;
          for (auto it2 = next(it1); it2 != satellites.end(); it2++)
             if ((*it1)->isDead() == false && (*it2)->isDead() == false)
             {

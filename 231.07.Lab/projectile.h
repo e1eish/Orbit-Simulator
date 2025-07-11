@@ -12,6 +12,9 @@
 #include "satellite.h"
 #include "uiDraw.h"
 
+#define MIN_LIFE 100
+#define MAX_LIFE 200
+
 using namespace std;
 
 
@@ -24,11 +27,11 @@ public:
    friend class Angle;
    
    
-   Projectile() : Satellite(), timer(0) {}
+   Projectile() : Satellite(), timer(random(MIN_LIFE,MAX_LIFE)) {}
    Projectile(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel) :
-               Satellite(pos, velocity, angle, angularVel), timer(random(50,100)) {}
-   Projectile(const Projectile & rhs) :  Satellite(rhs), timer(random(50,100)) {}
-   Projectile(const Satellite * rhs, const Angle & angle) : Satellite(*rhs), timer(random(50,100))
+               Satellite(pos, velocity, angle, angularVel), timer(random(MIN_LIFE,MAX_LIFE)) {}
+   Projectile(const Projectile & rhs) :  Satellite(rhs), timer(random(MIN_LIFE,MAX_LIFE)) {}
+   Projectile(const Satellite * rhs, const Angle & angle) : Satellite(*rhs), timer(random(MIN_LIFE,MAX_LIFE))
    {
       direction = angle;
       angularVelocity = random(-0.5, 0.5);
