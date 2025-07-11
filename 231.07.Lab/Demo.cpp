@@ -88,13 +88,13 @@ public:
    }
 
    
-//   double computeDistance(Position pos1, Position pos2)
-//   {
-//      double x = pos1.getMetersX() - pos2.getMetersX();
-//      double y = pos1.getMetersY() - pos2.getMetersY();
-//      double c = sqrt((x * x) + (y * y));
-//      return c;
-//   }
+   double computeDistance(Position pos1, Position pos2)
+   {
+      double x = pos1.getPixelsX() - pos2.getPixelsX();
+      double y = pos1.getPixelsY() - pos2.getPixelsY();
+      double c = sqrt((x * x) + (y * y));
+      return c;
+   }
    
    void move()
    {
@@ -104,8 +104,8 @@ public:
       for (auto it1 = satellites.begin(); it1 != satellites.end(); it1++)
       {
          double distance = computeDistance((*it1)->getPosition(), Position(0.0, 0.0));
-         if (distance < ((*it1)->getRadius() + EARTH_RADIUS))
-            (*it1)->kill();
+//         if (distance < ((*it1)->getRadius() + (EARTH_RADIUS / 40.0)))
+//            (*it1)->kill();
          
          //auto it2 = it1;
          //it2++;
