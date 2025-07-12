@@ -21,6 +21,9 @@
 #define ROTATION_SPEED 0.05
 #define THRUST 2.0
 
+#define SHIP_RADIUS 10.0
+#define BULLET_RADIUS 1.0
+
 /*******************************
  * TEST Ship
  * A friend class for Ship which contains the Ship unit tests
@@ -63,6 +66,9 @@ public:
       input_thrustRight();
       input_thrustDiagonal();
       
+      // fire bullet
+      fireBullet_up();
+      
       
       report("Ship");
    }
@@ -88,7 +94,7 @@ private:
       assertEquals(s.direction.radians, 0.0);
       assertEquals(s.angularVelocity, 0.0);
       assertEquals(s.dead, false);
-      assertEquals(s.radius, 0.0);
+      assertEquals(s.radius, SHIP_RADIUS);
    }  // teardown
    
    /*********************************************
@@ -120,7 +126,7 @@ private:
       assertEquals(s.direction.radians, M_PI);
       assertEquals(s.angularVelocity, 5.5);
       assertEquals(s.dead, false);
-      assertEquals(s.radius, 6.6);
+      assertEquals(s.radius, SHIP_RADIUS);
       
       assertEquals(p.x, 1.1);
       assertEquals(p.y, 2.2);
@@ -811,6 +817,66 @@ private:
       assertEquals(s.dead, false);
       assertEquals(s.radius, 0.0);
       assertEquals(time, 1.0);
+      
+      // teardown
+      Interface::isUpPress = isUp;
+   }
+   
+   /*********************************************
+    * name:    FIRE BULLET UP
+    * input: dx=3.3, dy=4.4, radians=pi/4
+    *    v_1 = v_0 + a * t
+    *    a_x = thrust * sin(radians)
+    *    a_y = thrust * cos(radians)
+    * output: dx=3.3, dy=104.4, radians=pi/2
+    *********************************************/
+   void fireBullet_up()
+   {
+      // setup
+      bool isUp = Interface::isUpPress;
+      
+      Ship s;
+      s.pos.x = 0.0;
+      s.pos.y = 2.2;
+      s.velocity.dx = 0.0;
+      s.velocity.dy = 4.4;
+      s.direction.radians = 0.0;
+      s.dead = false;
+      s.angularVelocity = 0.0;
+      s.radius = 0.0;
+      
+      list<Satellite*> satellites;
+      
+      double time = 1.0;
+      
+      
+      Interface ui;
+      ui.isSpacePress = true;
+      
+      // exercise
+      s.fireBullet(satellites, time);
+      
+      // verify
+      assertEquals(s.pos.x, 0.0);
+      assertEquals(s.pos.y, 2.2);
+      assertEquals(s.velocity.dx, 0.0);
+      assertEquals(s.velocity.dy, 4.4);
+      assertEquals(s.direction.radians, 0.0);
+      assertEquals(s.angularVelocity, 0.0);
+      assertEquals(s.dead, false);
+      assertEquals(s.radius, 0.0);
+      assertEquals(time, 1.0);
+      
+      for (auto it = satellites.begin(); it != satellites.end(); it++)
+      {
+         assertEquals((*it)->pos.x, 0.0);
+         assertEquals((*it)->pos.y, 762.2);
+         assertEquals((*it)->velocity.dx, 0.0);
+         assertEquals((*it)->velocity.dy, 9004.4);
+         assertEquals((*it)->direction.radians, 0.0);
+         assertEquals((*it)->dead, false);
+         assertEquals((*it)->radius, 1.0);
+      }
       
       // teardown
       Interface::isUpPress = isUp;

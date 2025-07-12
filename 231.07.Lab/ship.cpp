@@ -43,14 +43,16 @@ void Ship::fireBullet(list<Satellite*> &satellites, double time)
 {
    Bullet * bullet = new Bullet(this, direction);
 
-   for (int i = 0; i < 4; i++)
-      bullet->move(time);
+//   for (int i = 0; i < 5; i++)
+//      bullet->move(time);
    
-//   double forwardX = 10.0 * sin(direction.getRadians());
-//   double forwardY = 10.0 * cos(direction.getRadians());
-//
-//   Position forwardPos(pos.getPixelsX() + forwardX, pos.getPixelsY() + forwardY);
-//   bullet->setPosition(forwardPos);
+   double forwardX = 19.0 * sin(direction.getRadians());
+   double forwardY = 19.0 * cos(direction.getRadians());
+
+   Position forwardPos;
+   forwardPos.setPixelsX(pos.getPixelsX() + forwardX);
+   forwardPos.setPixelsY(pos.getPixelsY() + forwardY);
+   bullet->setPosition(forwardPos);
    
    satellites.push_back(bullet);
 }

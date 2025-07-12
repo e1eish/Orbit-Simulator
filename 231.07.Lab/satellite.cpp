@@ -53,13 +53,13 @@ vector<Position> Satellite::getDestructionPositions(int numberPositions)
 {
    vector<Position> positions;
    
-   double angleOffset = random(0.0, 2.0 * M_PI);
+   double angleOffset = random(0.0, M_PI);
    
    double minDistance = (MAX_PART_RADIUS * numberPositions) / M_PI;
    
    for (int i = 0; i < numberPositions; i++)
    {
-      double angle = ((2 * M_PI / numberPositions) + angleOffset) * i;
+      double angle = ((2 * M_PI / numberPositions) * i) + angleOffset;
       double x = pos.getPixelsX() + 2.0 * minDistance * sin(angle);
       double y = pos.getPixelsY() + 2.0 * minDistance * cos(angle);
       Position p(x, y);

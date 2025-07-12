@@ -30,6 +30,7 @@ public:
    friend class Angle;
    friend class TestPart;
    friend class TestProjectile;
+   friend class TestShip;
    
    
    Satellite() : velocity(Velocity(0.0, 0.0)), pos(Position(0.0, 0.0)), direction(Angle(0.0)),

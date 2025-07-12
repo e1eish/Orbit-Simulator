@@ -18,6 +18,8 @@
 #define EARTH_RADIUS 6378000.0
 #define GRAVITY 9.80665
 
+#define HUBBLE_RADIUS 10.0
+
 /*******************************
  * TEST Hubble
  * A friend class for Hubble which contains the Hubble unit tests
@@ -76,7 +78,7 @@ private:
       assertEquals(s.direction.radians, 0.0);
       assertEquals(s.angularVelocity, 0.0);
       assertEquals(s.dead, false);
-      assertEquals(s.radius, 0.0);
+      assertEquals(s.radius, HUBBLE_RADIUS);
    }  // teardown
    
    /*********************************************
@@ -108,7 +110,7 @@ private:
       assertEquals(s.direction.radians, M_PI);
       assertEquals(s.angularVelocity, 5.5);
       assertEquals(s.dead, false);
-      assertEquals(s.radius, 6.6);
+      assertEquals(s.radius, HUBBLE_RADIUS);
       
       assertEquals(p.x, 1.1);
       assertEquals(p.y, 2.2);
