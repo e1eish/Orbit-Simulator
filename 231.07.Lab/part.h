@@ -25,14 +25,17 @@ public:
    friend class Angle;
    
    
-   Part() : Satellite() {}
+   Part() : Satellite()
+   {
+      angularVelocity = random(-M_PI / 6.0, M_PI / 6.0);
+   }
    Part(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel) :
                Satellite(pos, velocity, angle, angularVel) {}
    Part(const Part & rhs) :  Satellite(rhs) {}
    Part(const Satellite * rhs, const Angle & angle) : Satellite(*rhs)
    {
       direction = angle;
-      angularVelocity = random(-0.5, 0.5);
+      angularVelocity = random(-M_PI / 6.0, M_PI / 6.0);;
       radius = 0.0;
    }
    ~Part() {}

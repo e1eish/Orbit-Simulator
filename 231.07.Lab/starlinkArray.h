@@ -29,7 +29,7 @@ public:
    StarlinkArray(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel) :
       Part(pos, velocity, angle, angularVel) { radius = STARLINK_ARRAY_RADIUS; }
    StarlinkArray(const StarlinkArray & rhs) :  Part(rhs) {}
-   StarlinkArray(const Satellite * rhs, const Angle & angle) :  Part(const Satellite * rhs, const Angle & angle) {}
+   StarlinkArray(const Satellite * rhs, const Angle & angle) :  Part(rhs, angle) {}
    ~StarlinkArray() {}
    
    virtual void draw(ogstream* pgout) const { pgout->drawStarlinkArray(pos, direction.getRadians()); }

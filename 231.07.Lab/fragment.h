@@ -20,11 +20,15 @@ using namespace std;
 class Fragment : public Projectile
 {
 public:
-   Fragment() : Projectile() { radius = FRAGMENT_RADIUS; }
+   Fragment() : Projectile()
+   {
+      angularVelocity = random(-M_PI / 6.0, M_PI / 6.0);
+      radius = FRAGMENT_RADIUS;
+   }
    Fragment(const Position & pos, Velocity & velocity, const Angle & angle) :
    Projectile(pos, velocity, angle, random(-0.5, 0.5))
    {
-      //velocity.addSpeed(random(0.0, 500.0));
+      angularVelocity = random(-M_PI / 6.0, M_PI / 6.0);
       radius = FRAGMENT_RADIUS;
    }
    Fragment(const Fragment & rhs) :  Projectile(rhs) {}

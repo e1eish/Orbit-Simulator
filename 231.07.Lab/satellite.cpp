@@ -53,11 +53,13 @@ vector<Position> Satellite::getDestructionPositions(int numberPositions)
 {
    vector<Position> positions;
    
+   double angleOffset = random(0.0, 2.0 * M_PI);
+   
    double minDistance = (MAX_PART_RADIUS * numberPositions) / M_PI;
    
    for (int i = 0; i < numberPositions; i++)
    {
-      double angle = (2 * M_PI / numberPositions) * i;
+      double angle = ((2 * M_PI / numberPositions) + angleOffset) * i;
       double x = pos.getPixelsX() + 2.0 * minDistance * sin(angle);
       double y = pos.getPixelsY() + 2.0 * minDistance * cos(angle);
       Position p(x, y);
@@ -74,7 +76,7 @@ void Satellite::adjustSatellite(Satellite * satellite, Position & startPos, Posi
    adjustPos.addPixelsY(pos.getPixelsY());
    
    Velocity v;
-   v.set(a, random(0.0, 200.0)); // add a random velocity in the direction the fragmment is moving
+   v.set(a, random(0.0, 1000.0)); // add a random velocity in the direction the fragmment is moving
    v = v + startVelocity;
    
    (*satellite).setPosition(adjustPos);

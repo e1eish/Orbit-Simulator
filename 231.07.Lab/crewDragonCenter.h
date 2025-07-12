@@ -30,7 +30,7 @@ public:
                Part(                 pos,                  velocity,               angle,        angularVel)
                { radius = DRAGON_CENTER_RADIUS; }
    CrewDragonCenter(const CrewDragonCenter & rhs) : Part(rhs) {}
-   CrewDragonCenter(const Satellite * rhs, const Angle & angle) :  Part(const Satellite * rhs, const Angle & angle) {}
+   CrewDragonCenter(const Satellite * rhs, const Angle & angle) :  Part(rhs, angle) {}
    ~CrewDragonCenter() {}
    
    virtual void draw(ogstream* pgout) const { pgout->drawCrewDragonCenter(pos, direction.getRadians()); }

@@ -11,6 +11,10 @@
 
 #include "satellite.h"
 #include "uiDraw.h"
+#include "hubbleTelescope.h"
+#include "hubbleComputer.h"
+#include "hubbleLeft.h"
+#include "hubbleRight.h"
 
 #define HUBBLE_RADIUS 10.0
 
@@ -33,5 +37,28 @@ public:
    ~Hubble() {}
    
    virtual void draw(ogstream* pgout) const { pgout->drawHubble(pos, direction.getRadians()); }
+   
+   virtual void destroy(list<Satellite*> &satellites)
+   {
+      vector<Position> positions = getDestructionPositions(4);
+      
+      HubbleTelescope * tele = new HubbleTelescope();
+      adjustSatellite(tele, pos, positions[0], velocity);
+      satellites.push_back(tele);
+      
+      HubbleComputer * comp = new HubbleComputer();
+      adjustSatellite(comp, pos, positions[1], velocity);
+      satellites.push_back(comp);
+      
+      HubbleLeft * left = new HubbleLeft();
+      adjustSatellite(left, pos, positions[2], velocity);
+      satellites.push_back(left);
+      
+      HubbleRight * right = new HubbleRight();
+      adjustSatellite(right, pos, positions[3], velocity);
+      satellites.push_back(right);
+      
+      kill();
+   }
 };
 

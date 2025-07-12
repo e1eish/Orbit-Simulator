@@ -29,7 +29,7 @@ public:
    HubbleTelescope(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel) :
       Part(pos, velocity, angle, angularVel) { radius = TELESCOPE_RADIUS; }
    HubbleTelescope(const GPSCenter & rhs) :  Part(rhs) {}
-   HubbleTelescope(const Satellite * rhs, const Angle & angle) :  Part(const Satellite * rhs, const Angle & angle) {}
+   HubbleTelescope(const Satellite * rhs, const Angle & angle) :  Part(rhs, angle) {}
    ~HubbleTelescope() {}
    
    virtual void draw(ogstream* pgout) const { pgout->drawHubbleTelescope(pos, direction.getRadians()); }

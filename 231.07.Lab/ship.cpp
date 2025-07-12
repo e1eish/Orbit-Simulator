@@ -7,8 +7,6 @@
  *    Everything we need to know about a Ship and how it moves
  ************************************************************************/
 
-#pragma once
-
 #include <cmath>
 #include "ship.h"
 #include "uiInteract.h"

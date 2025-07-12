@@ -25,7 +25,10 @@ public:
    Bullet(const Position & pos, Velocity & velocity, const Angle & angle) :
    Projectile(pos, velocity, angle, 0.0)
    {
-      velocity.addSpeed(BULLET_SPEED);
+      angularVelocity = 0.0;
+      Velocity v;
+      v.set(angle, BULLET_SPEED);
+      velocity.add(v);
       radius = BULLET_RADIUS;
    }
    Bullet(const Bullet & rhs) :  Projectile(rhs) {}
