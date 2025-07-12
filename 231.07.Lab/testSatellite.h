@@ -605,4 +605,45 @@ private:
       assertEquals(s.radius, 0.0);
       assertEquals(time, 1.0);
    }  // teardown
+
+      /*********************************************
+    * name:    ADJUST SATELLITE SIMPLE
+    * input:   startPos(100, 200), adjustPos(10, 20), startVelocity(5, 7)
+    * output:  pos(110, 220), direction(adjustPos angle),
+    *          velocity direction matches adjustPos angle, magnitude >= startVelocity mag
+    *********************************************/
+   void adjust_satellite_simple()
+   {
+      // setup
+      Satellite s;
+      Position      startPos(100.0, 200.0); // initial position
+      Position     adjustPos(10.0, 20.0);  // adjustment to apply
+      Velocity startVelocity(5.0, 7.0);   // initial velocity
+
+      // expected results
+      double expectedX = startPos.getPixelsX() + adjustPos.getPixelsX(); // should be 110.0
+      double expectedY = startPos.getPixelsY() + adjustPos.getPixelsY(); // should be 220.0
+      Angle expectedAngle = adjustPos.getAngle();                        // angle in direction of adjustPos
+
+      // exercise
+      s.adjustSatellite(&s, startPos, adjustPos, startVelocity);
+
+      // capture resulting velocity angle and magnitudes for testing
+      Angle velAngle = s.getVelocity().getAngle();
+      double sVelMag = s.getVelocity().getMagnitude();
+      double startVelMag = startVelocity.getMagnitude();
+
+      // verify 
+      assertEquals(s.getPosition().getPixelsX(), expectedX);
+      assertEquals(s.getPosition().getPixelsY(), expectedY);
+
+      // verify direction matches the direction of adjustPos
+      assertEquals(s.getDirection().radians, expectedAngle.radians);
+
+      // verify that the velocity direction is close to expected (allowing floating-point tolerance)
+      assertEquals(fabs(velAngle.radians - expectedAngle.radians) < 0.0001, true);
+
+      // verify that the velocity magnitude has increased or stayed the same (due to added random velocity)
+      assertEquals(sVelMag >= startVelMag, true);
+   }
 };
