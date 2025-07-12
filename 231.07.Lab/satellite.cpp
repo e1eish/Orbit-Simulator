@@ -13,7 +13,7 @@
 
 #define EARTH_RADIUS 6378000.0
 #define GRAVITY 9.80665
-#define MAX_PART_RADIUS 2000000.0
+#define MAX_PART_RADIUS 10.0
 
 void Satellite::move(double time)
 {
@@ -55,14 +55,16 @@ vector<Position> Satellite::getDestructionPositions(int numberPositions)
    
    double angleOffset = random(0.0, M_PI);
    
-   double minDistance = (MAX_PART_RADIUS * numberPositions) / M_PI;
+   double minDistance = ((MAX_PART_RADIUS + 10.0) * numberPositions) / M_PI;
    
    for (int i = 0; i < numberPositions; i++)
    {
       double angle = ((2 * M_PI / numberPositions) * i) + angleOffset;
-      double x = pos.getPixelsX() + 2.0 * minDistance * sin(angle);
-      double y = pos.getPixelsY() + 2.0 * minDistance * cos(angle);
-      Position p(x, y);
+      double x = pos.getPixelsX() + minDistance * sin(angle);
+      double y = pos.getPixelsY() + minDistance * cos(angle);
+      Position p;
+      p.setPixelsX(x);
+      p.setPixelsY(y);
       positions.push_back(p);
    }
    return positions;
@@ -72,11 +74,50 @@ vector<Position> Satellite::getDestructionPositions(int numberPositions)
 void Satellite::adjustSatellite(Satellite * satellite, Position & startPos, Position & adjustPos, Velocity & startVelocity)
 {
    Angle a = adjustPos.getAngle();
-   adjustPos.addPixelsX(pos.getPixelsX()); // add the new position difference to the beginning position to get the resultant position
-   adjustPos.addPixelsY(pos.getPixelsY());
+   //adjustPos.addPixelsX(pos.getPixelsX()); // add the new position difference to the beginning position to get the resultant position
+   //adjustPos.addPixelsY(pos.getPixelsY());
    
    Velocity v;
    v.set(a, random(0.0, 1000.0)); // add a random velocity in the direction the fragmment is moving
+   v = v + startVelocity;
+   
+   (*satellite).setPosition(adjustPos);
+   (*satellite).setVelocity(v);
+   (*satellite).setDirection(a);
+}
+
+
+
+
+
+
+vector<Position> SatelliteStub::getDestructionPositions(int numberPositions)
+{
+   vector<Position> positions;
+   
+   double angleOffset = 0.0; // get rid of randomness
+   
+   double minDistance = ((MAX_PART_RADIUS + 10.0) * numberPositions) / M_PI;
+   
+   for (int i = 0; i < numberPositions; i++)
+   {
+      double angle = ((2 * M_PI / numberPositions) * i) + angleOffset;
+      double x = pos.getPixelsX() + minDistance * sin(angle);
+      double y = pos.getPixelsY() + minDistance * cos(angle);
+      Position p;
+      p.setPixelsX(x);
+      p.setPixelsY(y);
+      positions.push_back(p);
+   }
+   return positions;
+}
+
+void SatelliteStub::adjustSatellite(Satellite * satellite, Position & startPos, Position & adjustPos, Velocity & startVelocity)
+{
+   Angle a = adjustPos.getAngle();
+   
+   Velocity v;
+   v.set(a, 1.0); // add a random velocity in the direction the fragmment is moving but no longer random
    v = v + startVelocity;
    
    (*satellite).setPosition(adjustPos);

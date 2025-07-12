@@ -42,9 +42,6 @@ void Ship::input(const Interface* pUI, list<Satellite*> &satellites, double time
 void Ship::fireBullet(list<Satellite*> &satellites, double time)
 {
    Bullet * bullet = new Bullet(this, direction);
-
-//   for (int i = 0; i < 5; i++)
-//      bullet->move(time);
    
    double forwardX = 19.0 * sin(direction.getRadians());
    double forwardY = 19.0 * cos(direction.getRadians());
@@ -53,6 +50,7 @@ void Ship::fireBullet(list<Satellite*> &satellites, double time)
    forwardPos.setPixelsX(pos.getPixelsX() + forwardX);
    forwardPos.setPixelsY(pos.getPixelsY() + forwardY);
    bullet->setPosition(forwardPos);
+   
    
    satellites.push_back(bullet);
 }

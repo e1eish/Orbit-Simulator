@@ -43,13 +43,6 @@ public:
       angleEarth = 0.0;
       phaseStar = 0;
       
-      // gps 1: p.x=          0.0, p.y=  26560000.0, v.dx= -3880.0, v.dy=      0.0, angle= pi/2
-      // gps 2: p.x=  23001634.72, p.y=  13280000.0, v.dx= -1940.0, v.dy=  3360.18, angle= 5pi/6
-      // gps 3: p.x=  23001634.72, p.y= -13280000.0, v.dx=  1940.0, v.dy=  3360.18, angle= pi/6
-      // gps 4: p.x=          0.0, p.y= -26560000.0, v.dx=  3880.0, v.dy=      0.0, angle= 3pi/2
-      // gps 5: p.x= -23001634.72, p.y= -13280000.0, v.dx=  1940.0, v.dy= -3360.18, angle= 11pi/6
-      // gps 6: p.x= -23001634.72, p.y=  13280000.0, v.dx= -1940.0, v.dy= -3360.18, angle= 7pi/6
-      
       Position shipPos;
       shipPos.setPixelsX(-450.0);
       shipPos.setPixelsY(450.0);
@@ -123,7 +116,7 @@ public:
          if ((*it)->isDead())
          {
             (*it)->destroy(satellites);
-            //delete (*it);
+            delete (*it);
             it = satellites.erase(it);
          }
    }
@@ -154,22 +147,7 @@ void callBack(const Interface* pUI, void* p)
    // the first step is to cast the void pointer into a game object. This
    // is the first step of every single callback function in OpenGL. 
    Demo* pDemo = (Demo*)p;
-
-   //
-   // accept input
-   //
-
-   // move by a little
-//   if (pUI->isUp())
-//      pDemo->ptShip.addPixelsY(1.0);
-//   if (pUI->isDown())
-//      pDemo->ptShip.addPixelsY(-1.0);
-//   if (pUI->isLeft())
-//      pDemo->ptShip.addPixelsX(-1.0);
-//   if (pUI->isRight())
-//      pDemo->ptShip.addPixelsX(1.0);
-
-
+   
    //
    // perform all the game logic
    //
@@ -178,10 +156,6 @@ void callBack(const Interface* pUI, void* p)
    pDemo->angleEarth -= ((2.0 * M_PI) / FRAMERATE) * ((24.0 * 60.0) / 86400.0);
    
    pDemo->phaseStar++;
-
-   //
-   // draw everything
-   //
 
    Position pt;
    ogstream gout(pt);

@@ -19,8 +19,8 @@
 #define GRAVITY 9.80665
 
 /*******************************
- * TEST Position
- * A friend class for Position which contains the Position unit tests
+ * TEST Satellite
+ * A friend class for Position which contains the Satellite unit tests
  ********************************/
 class TestSatellite : public UnitTest
 {
@@ -53,6 +53,11 @@ public:
       move_noVelocity();
       move_perpendicularVelocity();
       move_diagonalVelocity();
+      
+      adjustSatellite_simple();
+      
+      getDestructionPositions_3();
+      getDestructionPositions_4();
       
       
       report("Satellite");
@@ -605,45 +610,148 @@ private:
       assertEquals(s.radius, 0.0);
       assertEquals(time, 1.0);
    }  // teardown
-
-      /*********************************************
+   
+   /*********************************************
     * name:    ADJUST SATELLITE SIMPLE
     * input:   startPos(100, 200), adjustPos(10, 20), startVelocity(5, 7)
-    * output:  pos(110, 220), direction(adjustPos angle),
-    *          velocity direction matches adjustPos angle, magnitude >= startVelocity mag
+    * output:  pos(10, 20), direction(0.463647609001),
+    *          velocity(5.4472135955, 7.894427191)
     *********************************************/
-   void adjust_satellite_simple()
+   void adjustSatellite_simple()
    {
       // setup
-      Satellite s;
-      Position      startPos(100.0, 200.0); // initial position
-      Position     adjustPos(10.0, 20.0);  // adjustment to apply
-      Velocity startVelocity(5.0, 7.0);   // initial velocity
-
-      // expected results
-      double expectedX = startPos.getPixelsX() + adjustPos.getPixelsX(); // should be 110.0
-      double expectedY = startPos.getPixelsY() + adjustPos.getPixelsY(); // should be 220.0
-      Angle expectedAngle = adjustPos.getAngle();                        // angle in direction of adjustPos
+      SatelliteStub s;
+      s.pos.x = 100.0;
+      s.pos.y = 200.0;
+      s.velocity.dx = 5.0;
+      s.velocity.dy = 7.0;
+      
+      Position adjustPos;
+      adjustPos.x = 10.0;
+      adjustPos.y = 20.0;
 
       // exercise
-      s.adjustSatellite(&s, startPos, adjustPos, startVelocity);
+      s.adjustSatellite(&s, s.pos, adjustPos, s.velocity);
 
-      // capture resulting velocity angle and magnitudes for testing
-      Angle velAngle = s.getVelocity().getAngle();
-      double sVelMag = s.getVelocity().getMagnitude();
-      double startVelMag = startVelocity.getMagnitude();
-
-      // verify 
-      assertEquals(s.getPosition().getPixelsX(), expectedX);
-      assertEquals(s.getPosition().getPixelsY(), expectedY);
-
-      // verify direction matches the direction of adjustPos
-      assertEquals(s.getDirection().radians, expectedAngle.radians);
-
-      // verify that the velocity direction is close to expected (allowing floating-point tolerance)
-      assertEquals(fabs(velAngle.radians - expectedAngle.radians) < 0.0001, true);
-
-      // verify that the velocity magnitude has increased or stayed the same (due to added random velocity)
-      assertEquals(sVelMag >= startVelMag, true);
+      // verify
+      assertEquals(s.pos.x, 10.0);
+      assertEquals(s.pos.y, 20.0);
+      assertEquals(s.velocity.dx, 5.4472135955);
+      assertEquals(s.velocity.dy, 7.894427191);
+      assertEquals(s.direction.radians, 0.463647609001);
+   }
+   
+   
+   /*********************************************
+    * name:    GET DESTRUCTION POSITIONS 3
+    * input:   pos.x=1.1, pos.y=2.2, v.dx= 3.3, v.dy= 4.4, dir=0.0, angularVel=0.0, radius=0.0, n=3, metersFromPixels=40.0
+    *    minDist = ((maxRadius + 10) * n) / pi
+    *    theta = (2pi / n) * i
+    *    x_2 = x_1 + 2 * minDist * sin(theta)
+    *    y_2 = y_1 + 2 * minDist * cos(theta)
+    *
+    *    meters to pixels -> m / metersFromPixels
+    *    pixels to meters -> p * metersFromPixels
+    * output:  1: (x=1.1, y=766.143726841), 2: (x=662.694674506, y= -379.771863421), 3: (x= -660.494674506, -379.771863421)
+    *********************************************/
+   void getDestructionPositions_3()
+   {
+      // setup
+      double metersPixels = Position::metersFromPixels;
+      Position::metersFromPixels = 40.0;
+      
+      SatelliteStub s;
+      s.pos.x = 1.1;
+      s.pos.y = 2.2;
+      s.velocity.dx = 3.3;
+      s.velocity.dy = 4.4;
+      s.direction.radians = 0.0;
+      s.dead = false;
+      s.angularVelocity = 0.0;
+      s.radius = 0.0;
+      
+      int n = 3;
+      
+      vector<Position> positions;
+      
+      // exercise
+      positions = s.getDestructionPositions(n);
+      // verify
+      assertEquals(s.pos.x, 1.1);
+      assertEquals(s.pos.y, 2.2);
+      assertEquals(s.velocity.dx, 3.3);
+      assertEquals(s.velocity.dy, 4.4);
+      assertEquals(s.direction.radians, 0.0);
+      assertEquals(s.angularVelocity, 0.0);
+      assertEquals(s.dead, false);
+      assertEquals(s.radius, 0.0);
+      
+      assertEquals(positions[0].x, 1.1);
+      assertEquals(positions[0].y, 766.143726841);
+      assertEquals(positions[1].x, 662.694674506);
+      assertEquals(positions[1].y, -379.771863421);
+      assertEquals(positions[2].x, -660.494674506);
+      assertEquals(positions[2].y, -379.771863421);
+      
+      // teardown
+      Position::metersFromPixels = metersPixels;
+   }
+   
+   /*********************************************
+    * name:    GET DESTRUCTION POSITIONS 4
+    * input:   pos.x=1.1, pos.y=2.2, v.dx= 3.3, v.dy= 4.4, dir=0.0, angularVel=0.0, radius=0.0, n=3, metersFromPixels=40.0
+    *    minDist = ((maxRadius + 10) * n) / pi
+    *    theta = (2pi / n) * i
+    *    x_2 = x_1 + minDist * sin(theta)
+    *    y_2 = y_1 + minDist * cos(theta)
+    *
+    *    meters to pixels -> m / metersFromPixels
+    *    pixels to meters -> p * metersFromPixels
+    * output:  1: (x=1.1, y=  1020.79163579), 2: (x=  1019.69163579, y=2.2),
+    *          3: (x=1.1, y= -1016.39163579), 4: (x= -1017.49163579, y=2.2)
+    *********************************************/
+   void getDestructionPositions_4()
+   {
+      // setup
+      double metersPixels = Position::metersFromPixels;
+      Position::metersFromPixels = 40.0;
+      
+      SatelliteStub s;
+      s.pos.x = 1.1;
+      s.pos.y = 2.2;
+      s.velocity.dx = 3.3;
+      s.velocity.dy = 4.4;
+      s.direction.radians = 0.0;
+      s.dead = false;
+      s.angularVelocity = 0.0;
+      s.radius = 0.0;
+      
+      int n = 4;
+      
+      vector<Position> positions;
+      
+      // exercise
+      positions = s.getDestructionPositions(n);
+      // verify
+      assertEquals(s.pos.x, 1.1);
+      assertEquals(s.pos.y, 2.2);
+      assertEquals(s.velocity.dx, 3.3);
+      assertEquals(s.velocity.dy, 4.4);
+      assertEquals(s.direction.radians, 0.0);
+      assertEquals(s.angularVelocity, 0.0);
+      assertEquals(s.dead, false);
+      assertEquals(s.radius, 0.0);
+      
+      assertEquals(positions[0].x,     1.1);
+      assertEquals(positions[0].y,  1020.79163579);
+      assertEquals(positions[1].x,  1019.69163579);
+      assertEquals(positions[1].y,     2.2);
+      assertEquals(positions[2].x,     1.1);
+      assertEquals(positions[2].y, -1016.39163579);
+      assertEquals(positions[3].x, -1017.49163579);
+      assertEquals(positions[3].y,     2.2);
+      
+      // teardown
+      Position::metersFromPixels = metersPixels;
    }
 };

@@ -53,7 +53,7 @@ public:
    Angle  getAngle()         const
    {
       Angle a;
-      a.setRadians(atan2(y, x));
+      a.setRadians(atan2(x, y));
       return a;
    }
 
