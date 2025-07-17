@@ -42,25 +42,11 @@ public:
    {
       vector<Position> positions = getDestructionPositions(5);
       
-      GPSCenter * center = new GPSCenter();
-      adjustSatellite(center, pos, positions[0], velocity);
-      satellites.push_back(center);
-      
-      Fragment * frag1 = new Fragment();
-      adjustSatellite(frag1, pos, positions[1], velocity);
-      satellites.push_back(frag1);
-      
-      GPSLeft * left = new GPSLeft();
-      adjustSatellite(left, pos, positions[2], velocity);
-      satellites.push_back(left);
-      
-      Fragment * frag2 = new Fragment();
-      adjustSatellite(frag2, pos, positions[3], velocity);
-      satellites.push_back(frag2);
-      
-      GPSRight * right = new GPSRight();
-      adjustSatellite(right, pos, positions[4], velocity);
-      satellites.push_back(right);
+      satellites.push_back(new GPSCenter(this, positions[0]));
+      satellites.push_back(new Fragment (this, positions[1]));
+      satellites.push_back(new GPSLeft  (this, positions[2]));
+      satellites.push_back(new Fragment (this, positions[3]));
+      satellites.push_back(new GPSRight (this, positions[4]));
       
       kill();
    }

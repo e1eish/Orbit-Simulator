@@ -42,18 +42,8 @@ public:
    {
       vector<Position> positions = getDestructionPositions(3);
       
-      Fragment * frag1 = new Fragment();
-      adjustSatellite(frag1, pos, positions[0], velocity);
-      satellites.push_back(frag1);
-      
-      Fragment * frag2 = new Fragment();
-      adjustSatellite(frag2, pos, positions[1], velocity);
-      satellites.push_back(frag2);
-      
-      Fragment * frag3 = new Fragment();
-      adjustSatellite(frag3, pos, positions[2], velocity);
-      satellites.push_back(frag3);
-
+      for (int i = 0; i < 3; i++)
+         satellites.push_back(new Fragment(this, positions[i]));
       
       kill();
    }

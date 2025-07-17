@@ -40,6 +40,17 @@ Position& Position::operator + (const Position& pt)
 }
 
 /******************************************
+ * POINT : Subtraction
+ * Subtract a point from another
+ *****************************************/
+Position& Position::operator - (const Position& pt)
+{
+   x -= pt.x;
+   y -= pt.y;
+   return *this;
+}
+
+/******************************************
  * POSITION insertion
  *       Display coordinates on the screen
  *****************************************/

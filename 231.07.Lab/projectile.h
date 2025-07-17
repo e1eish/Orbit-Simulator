@@ -12,8 +12,8 @@
 #include "satellite.h"
 #include "uiDraw.h"
 
-#define MIN_LIFE 100
-#define MAX_LIFE 200
+#define MIN_LIFE 50
+#define MAX_LIFE 100
 
 using namespace std;
 
@@ -37,6 +37,7 @@ public:
       angularVelocity = random(-0.5, 0.5);
       radius = 0.0;
    }
+   Projectile(const Satellite * rhs, const Position & position) : Satellite(rhs, position), timer(random(MIN_LIFE,MAX_LIFE)) {}
    ~Projectile() {}
    
    virtual void move(double time)

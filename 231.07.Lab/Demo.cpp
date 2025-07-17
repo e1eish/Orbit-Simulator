@@ -28,7 +28,7 @@ using namespace std;
 #define FRAMERATE 30.0
 #define TIME (24.0 * 60.0) / FRAMERATE
 
-#define ROTATION -0.00701141736517
+#define ROTATION -0.00701141736517  // Rotation of GPS satellites to more or less stay facing the earth
 
 /*************************************************************************
  * Demo
@@ -46,38 +46,17 @@ public:
       Position shipPos;
       shipPos.setPixelsX(-450.0);
       shipPos.setPixelsY(450.0);
-      Ship * ship = new Ship(shipPos, Velocity(0.0, -2000), Angle(90.0), 0.0);
-      satellites.push_back(ship);
-      
-      Hubble * hubble = new Hubble(Position(0.0, -42164000.0), Velocity(3100.0, 0.0), Angle(90.0), 0.0);
-      satellites.push_back(hubble);
-      
-      GPS * gps1 = new GPS(Position(0.0, 26560000.0), Velocity(-3880.0, 0.0), Angle(90.0), ROTATION);
-      satellites.push_back(gps1);
-      
-      GPS * gps2 = new GPS(Position(23001634.72, 13280000.0), Velocity(-1940.0, 3360.18), Angle(150.0), ROTATION);
-      satellites.push_back(gps2);
-      
-      GPS * gps3 = new GPS(Position(23001634.72, -13280000.0), Velocity(1940.0, 3360.18), Angle(30.0), ROTATION);
-      satellites.push_back(gps3);
-      
-      GPS * gps4 = new GPS(Position(0.0, -26560000.0), Velocity(3880.0, 0.0), Angle(270.0), ROTATION);
-      satellites.push_back(gps4);
-      
-      GPS * gps5 = new GPS(Position(-23001634.72, -13280000.0), Velocity(1940.0, -3360.18), Angle(330.0), ROTATION);
-      satellites.push_back(gps5);
-      
-      GPS * gps6 = new GPS(Position(-23001634.72, 13280000.0), Velocity(-1940.0, -3360.18), Angle(210.0), ROTATION);
-      satellites.push_back(gps6);
-      
-      Sputnik * sputnik = new Sputnik(Position(-36515095.13, 21082000.0), Velocity(2050.0, 2684.68), Angle(90.0), 0.0);
-      satellites.push_back(sputnik);
-      
-      CrewDragon * dragon = new CrewDragon(Position(0.0, 8000000.0), Velocity(-7900.0, 0.0), Angle(90.0), 0.0);
-      satellites.push_back(dragon);
-      
-      Starlink * starlink = new Starlink(Position(0.0, -13020000.0), Velocity(5800.0, 0.0), Angle(90.0), 0.0);
-      satellites.push_back(starlink);
+      satellites.push_back(new Ship(                               shipPos, Velocity(    0.0, -2000.0),  Angle(90.0), 0.0));
+      satellites.push_back(new Hubble(Position(        0.0,   -42164000.0), Velocity( 3100.0,     0.0),  Angle(90.0), 0.0));
+      satellites.push_back(new GPS(Position(           0.0,    26560000.0), Velocity(-3880.0,     0.0),  Angle(90.0), ROTATION));
+      satellites.push_back(new GPS(Position(    23001634.72,   13280000.0), Velocity(-1940.0,  3360.18),Angle(150.0), ROTATION));
+      satellites.push_back(new GPS(Position(    23001634.72,  -13280000.0), Velocity( 1940.0,  3360.18), Angle(30.0), ROTATION));
+      satellites.push_back(new GPS(Position(           0.0,   -26560000.0), Velocity( 3880.0,     0.0), Angle(270.0), ROTATION));
+      satellites.push_back(new GPS(Position(    -23001634.72, -13280000.0), Velocity( 1940.0, -3360.18),Angle(330.0), ROTATION));
+      satellites.push_back(new GPS(Position(    -23001634.72,  13280000.0), Velocity(-1940.0, -3360.18),Angle(210.0), ROTATION));
+      satellites.push_back(new Sputnik(Position(-36515095.13,  21082000.0), Velocity( 2050.0,  2684.68), Angle(90.0), 0.0));
+      satellites.push_back(new CrewDragon(Position(     0.0,    8000000.0), Velocity(-7900.0,     0.0),  Angle(90.0), 0.0));
+      satellites.push_back(new Starlink(Position(       0.0,  -13020000.0), Velocity( 5800.0,     0.0),  Angle(90.0), 0.0));
    }
 
    
@@ -96,10 +75,12 @@ public:
       
       for (auto it1 = satellites.begin(); it1 != satellites.end(); it1++)
       {
+         // check collision with the earth
          double distance = computeDistance((*it1)->getPosition(), Position(0.0, 0.0));
          if (distance < ((*it1)->getRadius() + 50))
             (*it1)->kill();
          
+         // check collision with other satellites
          for (auto it2 = next(it1); it2 != satellites.end(); it2++)
             if ((*it1)->isDead() == false && (*it2)->isDead() == false)
             {
@@ -112,6 +93,7 @@ public:
             }
       }
       
+      // clean up zombies
       for (auto it = satellites.begin(); it != satellites.end(); it++)
          if ((*it)->isDead())
          {
@@ -171,6 +153,7 @@ void callBack(const Interface* pUI, void* p)
    for (auto it = pDemo->satellites.begin(); it != pDemo->satellites.end(); ++it)
       (*it)->input(pUI, pDemo->satellites, TIME);
    
+   // move everything
    pDemo->move();
    
    // draw satellites
@@ -183,6 +166,9 @@ void callBack(const Interface* pUI, void* p)
 }
 
 double Position::metersFromPixels = 40.0;
+
+#include <thread> // For std::this_thread
+#include <chrono> // For std::chrono::milliseconds, etc.
 
 /*********************************
  * Initialize the simulation and set it in motion
@@ -200,6 +186,7 @@ int main(int argc, char** argv)
 {
 
    testRunner();
+   std::this_thread::sleep_for(std::chrono::seconds(1));
 
    // Initialize OpenGL
    Position ptUpperRight;

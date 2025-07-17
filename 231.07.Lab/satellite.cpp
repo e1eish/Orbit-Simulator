@@ -70,20 +70,12 @@ vector<Position> Satellite::getDestructionPositions(int numberPositions)
    return positions;
 }
 
-
-void Satellite::adjustSatellite(Satellite * satellite, Position & startPos, Position & adjustPos, Velocity & startVelocity)
+void Satellite::addRandomVelocity()
 {
-   Angle a = adjustPos.getAngle();
-   //adjustPos.addPixelsX(pos.getPixelsX()); // add the new position difference to the beginning position to get the resultant position
-   //adjustPos.addPixelsY(pos.getPixelsY());
-   
    Velocity v;
-   v.set(a, random(0.0, 1000.0)); // add a random velocity in the direction the fragmment is moving
-   v = v + startVelocity;
-   
-   (*satellite).setPosition(adjustPos);
-   (*satellite).setVelocity(v);
-   (*satellite).setDirection(a);
+   v.set(direction, random(2500.0, 4500.0)); // add a random velocity in the direction the fragmment is moving
+   v = v + velocity;
+   setVelocity(v);
 }
 
 
@@ -112,15 +104,10 @@ vector<Position> SatelliteStub::getDestructionPositions(int numberPositions)
    return positions;
 }
 
-void SatelliteStub::adjustSatellite(Satellite * satellite, Position & startPos, Position & adjustPos, Velocity & startVelocity)
+void SatelliteStub::addRandomVelocity()
 {
-   Angle a = adjustPos.getAngle();
-   
    Velocity v;
-   v.set(a, 1.0); // add a random velocity in the direction the fragmment is moving but no longer random
-   v = v + startVelocity;
-   
-   (*satellite).setPosition(adjustPos);
-   (*satellite).setVelocity(v);
-   (*satellite).setDirection(a);
+   v.set(direction, 1.0); // add a random velocity in the direction the fragmment is moving but no longer random
+   v = v + velocity;
+   setVelocity(v);
 }

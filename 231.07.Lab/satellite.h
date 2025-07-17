@@ -41,6 +41,16 @@ public:
                velocity(velocity), pos(pos), direction(angle), angularVelocity(angularVel), dead(false), radius(0.0) {}
    Satellite(const Satellite & rhs) : velocity(rhs.velocity), pos(rhs.pos), direction(rhs.direction),
                                        angularVelocity(rhs.angularVelocity), dead(rhs.dead), radius(rhs.radius) {}
+   Satellite(const Satellite * rhs, const Position & position) : pos(rhs->pos), velocity(rhs->velocity), dead(false)
+   {
+      Position p(position);
+      p = p - pos;
+      direction = p.getAngle();
+      pos = position;
+      angularVelocity = random(-M_PI / 6.0, M_PI / 6.0);
+      radius = 0.0;
+      addRandomVelocity();
+   }
    ~Satellite() {}
    
    void setPosition(const Position & rhs) { pos = rhs;       }
@@ -71,7 +81,7 @@ protected:
    Acceleration getGravity() const;
    
    vector<Position> getDestructionPositions(int numberPositions);
-   void adjustSatellite(Satellite * satellite, Position & startPos, Position & adjustPos, Velocity & startVelocity);
+   void addRandomVelocity();
 };
 
 
@@ -84,6 +94,7 @@ public:
    SatelliteDummy(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel) :
                Satellite(pos, velocity, angle, angularVel) {}
    SatelliteDummy(const Satellite & rhs) : Satellite(rhs) {}
+   SatelliteDummy(const Satellite * rhs, const Position & position) : Satellite() {}
    ~SatelliteDummy() {}
    
    void setPosition(const Position & rhs) { assert(false); }
@@ -107,7 +118,6 @@ protected:
    Acceleration getGravity() const { assert(false); }
    
    vector<Position> getDestructionPositions(int numberPositions) { assert(false); }
-   void adjustSatellite(Satellite * satellite, Position & startPos, Position & adjustPos, Velocity & startVelocity) { assert(false); }
 };
 
 class SatelliteStub : SatelliteDummy
@@ -115,7 +125,21 @@ class SatelliteStub : SatelliteDummy
 public:
    friend class TestSatellite;
    
+   SatelliteStub() : SatelliteDummy() {}
+   SatelliteStub(const Satellite * rhs, const Position & position) : SatelliteDummy(rhs, position)
+   {
+      Position p(position);
+      p = p - pos;
+      direction = p.getAngle();
+      pos = position;
+      angularVelocity = M_PI / 2.0;
+      radius = 0.0;
+      addRandomVelocity();
+   }
+   
+   void setVelocity(const Velocity & rhs) { velocity = rhs; }
+   
 protected:
    vector<Position> getDestructionPositions(int numberPositions);
-   void adjustSatellite(Satellite * satellite, Position & startPos, Position & adjustPos, Velocity & startVelocity);
+   void addRandomVelocity();
 };

@@ -42,25 +42,11 @@ public:
    {
       vector<Position> positions = getDestructionPositions(5);
       
-      CrewDragonCenter * center = new CrewDragonCenter();
-      adjustSatellite(center, pos, positions[0], velocity);
-      satellites.push_back(center);
-      
-      Fragment * frag1 = new Fragment();
-      adjustSatellite(frag1, pos, positions[1], velocity);
-      satellites.push_back(frag1);
-      
-      CrewDragonLeft * left = new CrewDragonLeft();
-      adjustSatellite(left, pos, positions[2], velocity);
-      satellites.push_back(left);
-      
-      Fragment * frag2 = new Fragment();
-      adjustSatellite(frag2, pos, positions[3], velocity);
-      satellites.push_back(frag2);
-      
-      CrewDragonRight * right = new CrewDragonRight();
-      adjustSatellite(right, pos, positions[4], velocity);
-      satellites.push_back(right);
+      satellites.push_back(new CrewDragonCenter(this, positions[0]));
+      satellites.push_back(new Fragment        (this, positions[1]));
+      satellites.push_back(new CrewDragonLeft  (this, positions[2]));
+      satellites.push_back(new Fragment        (this, positions[3]));
+      satellites.push_back(new CrewDragonRight (this, positions[4]));
       
       kill();
    }

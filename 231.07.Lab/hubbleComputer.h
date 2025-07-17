@@ -30,6 +30,7 @@ public:
       Part(pos, velocity, angle, angularVel) { radius = COMPUTER_RADIUS; }
    HubbleComputer(const GPSCenter & rhs) :  Part(rhs) {}
    HubbleComputer(const Satellite * rhs, const Angle & angle) :  Part(rhs, angle) {}
+   HubbleComputer(const Satellite * rhs, const Position & position) :  Part(rhs, position) { radius = COMPUTER_RADIUS; }
    ~HubbleComputer() {}
    
    virtual void draw(ogstream* pgout) const { pgout->drawHubbleComputer(pos, direction.getRadians()); }

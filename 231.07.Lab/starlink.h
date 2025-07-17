@@ -41,21 +41,10 @@ public:
    {
       vector<Position> positions = getDestructionPositions(4);
       
-      StarlinkBody * body = new StarlinkBody();
-      adjustSatellite(body, pos, positions[0], velocity);
-      satellites.push_back(body);
-      
-      Fragment * frag1 = new Fragment();
-      adjustSatellite(frag1, pos, positions[1], velocity);
-      satellites.push_back(frag1);
-      
-      StarlinkArray * arr = new StarlinkArray();
-      adjustSatellite(arr, pos, positions[2], velocity);
-      satellites.push_back(arr);
-      
-      Fragment * frag2 = new Fragment();
-      adjustSatellite(frag2, pos, positions[3], velocity);
-      satellites.push_back(frag2);
+      satellites.push_back(new StarlinkBody (this, positions[0]));
+      satellites.push_back(new Fragment     (this, positions[1]));
+      satellites.push_back(new StarlinkArray(this, positions[2]));
+      satellites.push_back(new Fragment     (this, positions[3]));
       
       kill();
    }

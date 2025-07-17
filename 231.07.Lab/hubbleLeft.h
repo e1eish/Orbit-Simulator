@@ -30,6 +30,7 @@ public:
       Part(pos, velocity, angle, angularVel) { radius = HUBBLE_LEFT_RADIUS; }
    HubbleLeft(const GPSCenter & rhs) :  Part(rhs) {}
    HubbleLeft(const Satellite * rhs, const Angle & angle) :  Part(rhs, angle) {}
+   HubbleLeft(const Satellite * rhs, const Position & position) :  Part(rhs, position) { radius = HUBBLE_LEFT_RADIUS; }
    ~HubbleLeft() {}
    
    virtual void draw(ogstream* pgout) const { pgout->drawHubbleLeft(pos, direction.getRadians()); }

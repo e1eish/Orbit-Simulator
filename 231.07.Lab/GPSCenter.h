@@ -31,6 +31,7 @@ public:
       Part(pos, velocity, angle, angularVel) { radius = GPS_CENTER_RADIUS; }
    GPSCenter(const GPSCenter & rhs) :  Part(rhs) {}
    GPSCenter(const Satellite * rhs, const Angle & angle) :  Part(rhs, angle) {}
+   GPSCenter(const Satellite * rhs, const Position & position) :  Part(rhs, position) { radius = GPS_CENTER_RADIUS; }
    ~GPSCenter() {}
    
    virtual void draw(ogstream* pgout) const { pgout->drawGPSCenter(pos, direction.getRadians()); }

@@ -33,6 +33,7 @@ public:
    }
    Fragment(const Fragment & rhs) :  Projectile(rhs) {}
    Fragment(const Satellite * rhs, const Angle & angle) : Projectile(rhs, angle) {}
+   Fragment(const Satellite * rhs, const Position & position) : Projectile(rhs, position) { radius = FRAGMENT_RADIUS; }
    ~Fragment() {}
    
    virtual void draw(ogstream* pgout) const { pgout->drawFragment(pos, direction.getRadians()); }

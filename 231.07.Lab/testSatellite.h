@@ -31,6 +31,7 @@ public:
       construct_default();
       construct_nonDefault();
       construct_copy();
+      construct_position();
       
       // getters
       getRadius();
@@ -54,7 +55,7 @@ public:
       move_perpendicularVelocity();
       move_diagonalVelocity();
       
-      adjustSatellite_simple();
+      addRandomVelocity_simple();
       
       getDestructionPositions_3();
       getDestructionPositions_4();
@@ -162,6 +163,49 @@ private:
       assertEquals(rhs.velocity.dx, 3.3);
       assertEquals(rhs.velocity.dy, 4.4);
       assertEquals(rhs.direction.radians, M_PI);
+      assertEquals(rhs.angularVelocity, 5.5);
+      assertEquals(rhs.radius, 6.6);
+   }  // teardown
+   
+   /*********************************************
+    * name:    POSITION CONSTRUCTOR
+    * input:   pos.x=1.1, pos.y=2.2, v.dx=3.3, v.dy=4.4, dir=180.0 degrees, angularVel=5.5, radius=6.6
+    * output:  pos(1.1, 2.2), velocity(3.3, 4.4)), direction(M_PI),
+               angularVelocity(5.5), dead(false), radius(6.6)
+    *********************************************/
+   void construct_position()
+   {
+      // setup
+      SatelliteStub rhs;
+      rhs.pos.x = 1.1;
+      rhs.pos.y = 2.2;
+      rhs.velocity.dx = 3.3;
+      rhs.velocity.dy = 4.4;
+      rhs.direction.radians = 0.0;
+      rhs.angularVelocity = 5.5;
+      rhs.radius = 6.6;
+      
+      Position p;
+      p.x = 3.3;
+      p.y = 6.6;
+      
+      // exercise
+      SatelliteStub s(&rhs, p);
+      // verify
+      assertEquals(s.pos.x, 3.3);
+      assertEquals(s.pos.y, 6.6);
+      assertEquals(s.velocity.dx, 0.4472135955);
+      assertEquals(s.velocity.dy, 0.894427191);
+      assertEquals(s.direction.radians, 0.463647609001);
+      assertEquals(s.angularVelocity, M_PI / 2.0);
+      assertEquals(s.dead, false);
+      assertEquals(s.radius, 0.0);
+      
+      assertEquals(rhs.pos.x, 1.1);
+      assertEquals(rhs.pos.y, 2.2);
+      assertEquals(rhs.velocity.dx, 3.3);
+      assertEquals(rhs.velocity.dy, 4.4);
+      assertEquals(rhs.direction.radians, 0.0);
       assertEquals(rhs.angularVelocity, 5.5);
       assertEquals(rhs.radius, 6.6);
    }  // teardown
@@ -612,17 +656,18 @@ private:
    }  // teardown
    
    /*********************************************
-    * name:    ADJUST SATELLITE SIMPLE
+    * name:    ADD RANDOM VELOCITY SIMPLE
     * input:   startPos(100, 200), adjustPos(10, 20), startVelocity(5, 7)
     * output:  pos(10, 20), direction(0.463647609001),
     *          velocity(5.4472135955, 7.894427191)
     *********************************************/
-   void adjustSatellite_simple()
+   void addRandomVelocity_simple()
    {
       // setup
       SatelliteStub s;
       s.pos.x = 100.0;
       s.pos.y = 200.0;
+      s.direction.radians = 0.0;
       s.velocity.dx = 5.0;
       s.velocity.dy = 7.0;
       
@@ -631,14 +676,15 @@ private:
       adjustPos.y = 20.0;
 
       // exercise
-      s.adjustSatellite(&s, s.pos, adjustPos, s.velocity);
+      //s.adjustSatellite(&s, s.pos, adjustPos, s.velocity);
+      s.addRandomVelocity();
 
       // verify
-      assertEquals(s.pos.x, 10.0);
-      assertEquals(s.pos.y, 20.0);
-      assertEquals(s.velocity.dx, 5.4472135955);
-      assertEquals(s.velocity.dy, 7.894427191);
-      assertEquals(s.direction.radians, 0.463647609001);
+      assertEquals(s.pos.x, 100.0);
+      assertEquals(s.pos.y, 200.0);
+      assertEquals(s.velocity.dx, 5.0);
+      assertEquals(s.velocity.dy, 8.0);
+      assertEquals(s.direction.radians, 0.0);
    }
    
    

@@ -29,7 +29,7 @@ public:
    GPSRight(const Position & pos, const Velocity & velocity, const Angle & angle, double angularVel) :
       Part(pos, velocity, angle, angularVel) { radius = GPS_RIGHT_RADIUS; }
    GPSRight(const GPSRight & rhs) :  Part(rhs) {}
-   GPSRight(const Satellite * rhs, const Angle & angle) :  Part(rhs, angle) {}
+   GPSRight(const Satellite * rhs, const Position & position) :  Part(rhs, position) { radius = GPS_RIGHT_RADIUS; }
    ~GPSRight() {}
    
    virtual void draw(ogstream* pgout) const { pgout->drawGPSRight(pos, direction.getRadians()); }

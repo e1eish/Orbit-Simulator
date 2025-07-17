@@ -31,6 +31,7 @@ public:
              { radius = DRAGON_LEFT_RADIUS; }
    CrewDragonLeft(const CrewDragonLeft & rhs) : Part(rhs) {}
    CrewDragonLeft(const Satellite * rhs, const Angle & angle) :  Part(rhs, angle) {}
+   CrewDragonLeft(const Satellite * rhs, const Position & position) :  Part(rhs, position) { radius = DRAGON_LEFT_RADIUS; }
    ~CrewDragonLeft() {}
    
    virtual void draw(ogstream* pgout) const { pgout->drawCrewDragonLeft(pos, direction.getRadians()); }

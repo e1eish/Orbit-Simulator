@@ -35,9 +35,10 @@ public:
    Part(const Satellite * rhs, const Angle & angle) : Satellite(*rhs)
    {
       direction = angle;
-      angularVelocity = random(-M_PI / 6.0, M_PI / 6.0);;
+      angularVelocity = random(-M_PI / 6.0, M_PI / 6.0);
       radius = 0.0;
    }
+   Part(const Satellite * rhs, const Position & position) : Satellite(rhs, position) { }
    ~Part() {}
    
    // generate fragments in positions that do not collide
@@ -46,11 +47,7 @@ public:
       vector<Position> positions = getDestructionPositions(count);
 
       for (int i = 0; i < count; i++)
-      {
-         Fragment * fragment = new Fragment();
-         adjustSatellite(fragment, pos, positions[i], velocity);
-         satellites.push_back(fragment);
-      }
+         satellites.push_back(new Fragment(this, positions[i]));
    }
 };
 

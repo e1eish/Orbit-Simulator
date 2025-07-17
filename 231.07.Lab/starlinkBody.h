@@ -30,6 +30,7 @@ public:
       Part(pos, velocity, angle, angularVel) { radius = STARLINK_BODY;}
    StarlinkBody(const StarlinkBody & rhs) :  Part(rhs) {}
    StarlinkBody(const Satellite * rhs, const Angle & angle) :  Part(rhs, angle) {}
+   StarlinkBody(const Satellite * rhs, const Position & position) :  Part(rhs, position) { radius = STARLINK_BODY; }
    ~StarlinkBody() {}
    
    virtual void draw(ogstream* pgout) const { pgout->drawStarlinkBody(pos, direction.getRadians()); }

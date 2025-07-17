@@ -42,21 +42,10 @@ public:
    {
       vector<Position> positions = getDestructionPositions(4);
       
-      HubbleTelescope * tele = new HubbleTelescope();
-      adjustSatellite(tele, pos, positions[0], velocity);
-      satellites.push_back(tele);
-      
-      HubbleComputer * comp = new HubbleComputer();
-      adjustSatellite(comp, pos, positions[1], velocity);
-      satellites.push_back(comp);
-      
-      HubbleLeft * left = new HubbleLeft();
-      adjustSatellite(left, pos, positions[2], velocity);
-      satellites.push_back(left);
-      
-      HubbleRight * right = new HubbleRight();
-      adjustSatellite(right, pos, positions[3], velocity);
-      satellites.push_back(right);
+      satellites.push_back(new HubbleTelescope(this, positions[0]));
+      satellites.push_back(new HubbleComputer (this, positions[1]));
+      satellites.push_back(new HubbleLeft     (this, positions[2]));
+      satellites.push_back(new HubbleRight    (this, positions[3]));
       
       kill();
    }
