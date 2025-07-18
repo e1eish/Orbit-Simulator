@@ -15,6 +15,10 @@
 #define GRAVITY 9.80665
 #define MAX_PART_RADIUS 10.0
 
+/******************************************
+ * SATELLITE : MOVE
+ * Move the satellite according to the kinematic equations.
+ *****************************************/
 void Satellite::move(double time)
 {
    Acceleration a = getGravity();
@@ -28,6 +32,10 @@ void Satellite::move(double time)
    direction.add(angularVelocity);
 }
 
+/******************************************
+ * SATELLITE : GET GRAVITY
+ * Calculate the acceleration due to the gravity of the earth.
+ *****************************************/
 Acceleration Satellite::getGravity() const
 {
    double h;
@@ -49,6 +57,11 @@ Acceleration Satellite::getGravity() const
    return a;
 }
 
+/******************************************
+ * SATELLITE : GET DESTRUCTION POSITIONS
+ * Calculate the positions neeed to put a given number of satellites around a point
+ *    so that they do not touch and destroy each other.
+ *****************************************/
 vector<Position> Satellite::getDestructionPositions(int numberPositions)
 {
    vector<Position> positions;
@@ -70,6 +83,10 @@ vector<Position> Satellite::getDestructionPositions(int numberPositions)
    return positions;
 }
 
+/******************************************
+ * SATELLITE : ADD RANDOM VELOCITY
+ * Add a random velocity to the current velocity.
+ *****************************************/
 void Satellite::addRandomVelocity()
 {
    Velocity v;
