@@ -42,8 +42,8 @@ public:
    Position(double x, double y);
    Position(const Position & pt) : x(pt.x), y(pt.y) {}
    Position& operator = (const Position& pt);
-   Position& operator + (const Position& pt);
-   Position& operator - (const Position& pt);
+   Position& operator + (const Position& pt) const;
+   Position& operator - (const Position& pt) const;
 
    // getters
    double getMetersX()       const { return x;                    }

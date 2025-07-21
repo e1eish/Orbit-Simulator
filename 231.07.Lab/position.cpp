@@ -32,22 +32,18 @@ Position& Position::operator = (const Position& pt)
  * POINT : ADDITION
  * Add two points together
  *****************************************/
-Position& Position::operator + (const Position& pt)
+Position& Position::operator + (const Position& pt) const
 {
-   x += pt.x;
-   y += pt.y;
-   return *this;
+   return *(new Position(x + pt.x, y + pt.y));
 }
 
 /******************************************
  * POINT : Subtraction
  * Subtract a point from another
  *****************************************/
-Position& Position::operator - (const Position& pt)
+Position& Position::operator - (const Position& pt) const
 {
-   x -= pt.x;
-   y -= pt.y;
-   return *this;
+   return *(new Position(x - pt.x, y - pt.y));
 }
 
 /******************************************

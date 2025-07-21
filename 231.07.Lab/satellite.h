@@ -43,9 +43,7 @@ public:
                                        angularVelocity(rhs.angularVelocity), dead(rhs.dead), radius(rhs.radius) {}
    Satellite(const Satellite * rhs, const Position & position) : pos(rhs->pos), velocity(rhs->velocity), dead(false)
    {
-      Position p(position);
-      p = p - pos;
-      direction = p.getAngle();
+      direction = (position - pos).getAngle();
       pos = position;
       angularVelocity = random(-M_PI / 6.0, M_PI / 6.0);
       radius = 0.0;
